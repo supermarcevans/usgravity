@@ -1,0 +1,200 @@
+---
+import { getCollection, render } from 'astro:content'
+import readingTime from 'reading-time'
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Bio from '../../components/Bio.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts')
+  return posts.map(p => ({
+    params: { slug: p.data.slug },
+    props: { post: p },
+  }));
+}
+
+const { post } = Astro.props
+const { title, slug, description, publishDate } = post.data;
+const readingTimeEstimate = readingTime(post.body).text
+const permalink = `${Astro.site.href}blog/${slug}`;
+const { Content } = await render(post)
+---
+
+<BaseLayout title={title} description={description} permalink={permalink} current="blog">
+  <header class="post-header">
+    <div class="post-meta">
+      <span class="post-date">{publishDate}</span>
+      <span class="post-divider">·</span>
+      <span class="post-reading-time">{readingTimeEstimate}</span>
+    </div>
+    <h1>{title}</h1>
+    <p class="post-description">{description}</p>
+    <hr />
+    <!-- Gravitational pull accent -->
+    <svg class="post-header-accent" viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="100" cy="10" r="3.5" fill="currentColor" opacity="0.4"/>
+      <circle cx="100" cy="10" r="8"   stroke="currentColor" stroke-width="0.7" opacity="0.15"/>
+      <circle cx="100" cy="10" r="14"  stroke="currentColor" stroke-width="0.5" opacity="0.08"/>
+      <line x1="0"   y1="10" x2="88"  y2="10" stroke="currentColor" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.2"/>
+      <line x1="112" y1="10" x2="200" y2="10" stroke="currentColor" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.2"/>
+    </svg>
+  </header>
+
+  <div class="container">
+    <article class="content">
+      <Content />
+    </article>
+    <hr />
+    <Bio />
+    <div class="post-footer-cta">
+      <p>Stratospheric thinking starts with a ground-level conversation. Curious how this applies to your business?</p>
+      <a href="mailto:usgravity.ethically151@passfwd.com" class="btn btn-primary">Talk to Marc</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ── Post Header ── */
+  .post-header {
+    text-align: center;
+    padding: 2em 1em 0;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .post-meta {
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-family: var(--font-family-sans);
+    font-weight: 600;
+    font-size: 0.85em;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75em;
+  }
+
+  .post-divider {
+    margin: 0 0.5em;
+    opacity: 0.5;
+  }
+
+  .post-header h1 {
+    font-size: 2.2em;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 0.5em;
+  }
+
+  .post-description {
+    font-size: 1.15em;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 580px;
+    margin: 0 auto 1.5em;
+  }
+
+  header hr {
+    min-width: 100px;
+    width: 30%;
+    margin: 1.5em auto 0.5em;
+    border-color: var(--border-color, #eee);
+  }
+
+  .post-header-accent {
+    display: block;
+    width: 200px;
+    height: 20px;
+    margin: 0 auto 1.5em;
+    color: var(--text-link);
+  }
+
+  /* ── Article Content ── */
+  .content {
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: 1.05em;
+    line-height: 1.8;
+  }
+
+  .content h2 {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 2em 0 0.6em;
+  }
+
+  .content h3 {
+    font-size: 1.2em;
+    font-weight: 700;
+    margin: 1.5em 0 0.5em;
+  }
+
+  .content p {
+    margin-bottom: 1.3em;
+  }
+
+  .content ul,
+  .content ol {
+    padding-left: 1.5em;
+    margin-bottom: 1.3em;
+  }
+
+  .content li {
+    margin-bottom: 0.5em;
+  }
+
+  .content blockquote {
+    border-left: 4px solid var(--text-link);
+    padding-left: 1.25em;
+    margin: 1.5em 0;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  hr {
+    margin: 60px auto;
+    max-width: 720px;
+    border-color: var(--border-color, #eee);
+  }
+
+  /* ── Post Footer CTA ── */
+  .post-footer-cta {
+    max-width: 720px;
+    margin: 0 auto 4em;
+    text-align: center;
+    padding: 2em;
+    background: var(--background-body-alt, #f6f8fc);
+    border-radius: 8px;
+  }
+
+  .post-footer-cta p {
+    font-size: 1.05em;
+    font-weight: 600;
+    margin-bottom: 1.25em;
+    color: var(--text-main);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.75em 1.75em;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 1em;
+    text-decoration: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .btn:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+  }
+
+  .btn-primary {
+    background: var(--text-link);
+    color: #fff;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 800px) {
+    .post-header h1 {
+      font-size: 1.7em;
+    }
+  }
+</style>
