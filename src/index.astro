@@ -1,0 +1,361 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'US Gravity | Virtual CIO & IT Consulting — Denver, CO';
+const description = 'Stratospheric thinking. Ground-level execution. Gravity Limited provides Virtual CIO, IT strategy, and IT leadership consulting for companies across the USA. Based in Denver, CO. Led by Marc Evans.';
+const permalink = Astro.site.href;
+---
+
+<BaseLayout title={title} description={description} permalink={permalink}>
+  <div class="home-container">
+    <div class="home-copy">
+      <p class="eyebrow">Stratospheric Thinking. Ground-Level Execution.</p>
+      <h1>Every Great Company Needs a Center of Gravity.</h1>
+      <p>
+        Gravity Limited partners with businesses across the USA to provide executive-level IT leadership — without the executive-level overhead. Whether you need a Virtual CIO, a sharper IT strategy, or someone to build and lead your technology team, Marc Evans brings the experience and gravity to get it done.
+      </p>
+      <div class="cta-group">
+        <a href="mailto:usgravity.ethically151@passfwd.com" class="btn btn-primary">Let's Talk</a>
+        <a href="/about" class="btn btn-secondary">About Marc</a>
+      </div>
+    </div>
+
+    <div class="hero-image-container">
+      <!-- Gravity Core SVG Accent -->
+      <svg class="gravity-svg" viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Orbit rings -->
+        <circle cx="170" cy="170" r="55"  stroke="currentColor" stroke-width="1.2" opacity="0.18"/>
+        <circle cx="170" cy="170" r="100" stroke="currentColor" stroke-width="1"   opacity="0.13"/>
+        <circle cx="170" cy="170" r="148" stroke="currentColor" stroke-width="0.8" opacity="0.09"/>
+
+        <!-- Elliptical orbit path for satellite -->
+        <ellipse cx="170" cy="170" rx="100" ry="38" stroke="currentColor" stroke-width="0.8" opacity="0.15" transform="rotate(-30 170 170)"/>
+
+        <!-- Satellite dot on ellipse -->
+        <circle cx="240" cy="140" r="5" fill="currentColor" opacity="0.55"/>
+        <!-- Satellite signal lines -->
+        <line x1="240" y1="140" x2="252" y2="128" stroke="currentColor" stroke-width="0.8" opacity="0.3"/>
+        <line x1="252" y1="128" x2="264" y2="120" stroke="currentColor" stroke-width="0.6" opacity="0.2"/>
+
+        <!-- Second small body -->
+        <circle cx="108" cy="218" r="3.5" fill="currentColor" opacity="0.35"/>
+
+        <!-- Gravitational pull dashes toward core -->
+        <line x1="240" y1="140" x2="210" y2="155" stroke="currentColor" stroke-width="0.6" stroke-dasharray="3 4" opacity="0.2"/>
+        <line x1="108" y1="218" x2="145" y2="195" stroke="currentColor" stroke-width="0.6" stroke-dasharray="3 4" opacity="0.2"/>
+
+        <!-- Core circle -->
+        <circle cx="170" cy="170" r="32" fill="currentColor" opacity="0.08"/>
+        <circle cx="170" cy="170" r="32" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+
+        <!-- G letterform -->
+        <text x="170" y="178" text-anchor="middle" font-size="26" font-weight="900" font-family="system-ui, sans-serif" fill="currentColor" opacity="0.75">G</text>
+
+        <!-- Tiny star accents -->
+        <circle cx="60"  cy="60"  r="1.5" fill="currentColor" opacity="0.25"/>
+        <circle cx="290" cy="80"  r="1"   fill="currentColor" opacity="0.2"/>
+        <circle cx="310" cy="260" r="1.5" fill="currentColor" opacity="0.18"/>
+        <circle cx="40"  cy="280" r="1"   fill="currentColor" opacity="0.2"/>
+        <circle cx="80"  cy="120" r="1"   fill="currentColor" opacity="0.15"/>
+        <circle cx="270" cy="200" r="1"   fill="currentColor" opacity="0.15"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Atmospheric arc divider -->
+  <div class="arc-divider" aria-hidden="true">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 Q600,0 1200,40" stroke="currentColor" stroke-width="1" fill="none" opacity="0.1"/>
+      <path d="M0,50 Q600,10 1200,50" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.07"/>
+    </svg>
+  </div>
+
+  <section class="services-section">
+    <h2>What We Do</h2>
+    <p class="section-intro">Stratospheric thinking applied to the ground-level problems that actually slow your business down.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3>Virtual CIO (vCIO)</h3>
+        <p>Get C-suite IT leadership at a fraction of the cost. Marc serves as your embedded strategic technology executive — attending leadership meetings, owning the IT roadmap, and aligning technology with your business goals.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🗺️</div>
+        <h3>IT Strategy & Roadmapping</h3>
+        <p>From where you are to where you need to be. We assess your current state, define your future state, and map a clear, actionable path — built around your industry, budget, and growth trajectory.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏗️</div>
+        <h3>IT Team Building & Leadership</h3>
+        <p>Need to build an IT team from scratch? Strengthen the one you have? Or simply add expert bandwidth for a season? We help you hire right, lead well, and develop the internal capability your company needs to scale.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📋</div>
+        <h3>IT Project Management</h3>
+        <p>Complex implementations, infrastructure overhauls, system migrations, and compliance initiatives — delivered on time and on budget with clear communication at every stage.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛡️</div>
+        <h3>Compliance & Regulatory Readiness</h3>
+        <p>Navigating CMMC, SOC 2, HIPAA, or industry-specific regulatory requirements? We help you build the frameworks, documentation, and controls that keep you audit-ready and protected.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚀</div>
+        <h3>Scaling & Problem Solving</h3>
+        <p>Growth is exciting — until your technology can't keep up. We identify the friction points, remove the barriers, and put the right systems and processes in place so your IT infrastructure scales as fast as your business does.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="industries-section">
+    <h2>Industries We Serve</h2>
+    <p class="section-intro">We understand the unique technology demands of complex, high-stakes industries.</p>
+    <div class="industries-list">
+      <span class="industry-tag">⛽ Energy</span>
+      <span class="industry-tag">⛏️ Mining & Prospecting</span>
+      <span class="industry-tag">🔌 Power Generation</span>
+      <span class="industry-tag">🏭 Industrial Manufacturing</span>
+      <span class="industry-tag">🧬 BioMedical Manufacturing</span>
+      <span class="industry-tag">🚚 Logistics</span>
+      <span class="industry-tag">+ Many More</span>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to Find Your Center of Gravity?</h2>
+    <p>Let's have a straightforward conversation about where your IT stands today and where it needs to go. No pressure, no jargon — just honest insight from someone who's been there.</p>
+    <a href="mailto:usgravity.ethically151@passfwd.com" class="btn btn-primary btn-large">Get in Touch</a>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── Hero ── */
+  .home-container {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    margin: 3em 0 4em;
+    min-height: 420px;
+    gap: 3em;
+  }
+
+  .home-copy {
+    flex: 1;
+    padding: 0 1em;
+    max-width: 600px;
+  }
+
+  .eyebrow {
+    font-size: 0.9em;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.5em;
+  }
+
+  .home-copy h1 {
+    font-weight: 700;
+    margin-bottom: 0.6em;
+    line-height: 1.25;
+    font-size: 2.4em;
+  }
+
+  .home-copy p {
+    font-size: 1.15em;
+    line-height: 1.7;
+    margin-bottom: 1.5em;
+  }
+
+  .cta-group {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+    margin-top: 1.5em;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.75em 1.75em;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 1em;
+    text-decoration: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .btn:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+  }
+
+  .btn-primary {
+    background: var(--text-link);
+    color: #fff;
+  }
+
+  .btn-secondary {
+    border: 2px solid var(--text-link);
+    color: var(--text-link);
+    background: transparent;
+  }
+
+  .btn-large {
+    padding: 1em 2.5em;
+    font-size: 1.1em;
+  }
+
+  /* ── Gravity SVG ── */
+  .hero-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: var(--text-link);
+  }
+
+  .gravity-svg {
+    width: 320px;
+    height: 320px;
+  }
+
+  /* ── Arc Divider ── */
+  .arc-divider {
+    width: 100%;
+    margin: -1em 0 0;
+    color: var(--text-link);
+  }
+
+  .arc-divider svg {
+    width: 100%;
+    height: 60px;
+    display: block;
+  }
+
+  /* ── Services ── */
+  .services-section {
+    padding: 4em 0;
+    border-top: 1px solid var(--border-color, #eee);
+  }
+
+  .services-section h2,
+  .industries-section h2,
+  .cta-section h2 {
+    font-size: 1.9em;
+    font-weight: 700;
+    margin-bottom: 0.4em;
+  }
+
+  .section-intro {
+    font-size: 1.1em;
+    color: var(--text-secondary);
+    margin-bottom: 2.5em;
+    max-width: 580px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2em;
+  }
+
+  .service-card {
+    padding: 1.75em;
+    border: 1px solid var(--border-color, #e8e8e8);
+    border-radius: 8px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .service-card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
+  }
+
+  .service-icon {
+    font-size: 1.8em;
+    margin-bottom: 0.5em;
+  }
+
+  .service-card h3 {
+    font-size: 1.1em;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+  }
+
+  .service-card p {
+    font-size: 0.95em;
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  /* ── Industries ── */
+  .industries-section {
+    padding: 3.5em 0;
+    border-top: 1px solid var(--border-color, #eee);
+  }
+
+  .industries-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75em;
+    margin-top: 1.5em;
+  }
+
+  .industry-tag {
+    padding: 0.5em 1.2em;
+    border-radius: 999px;
+    border: 1.5px solid var(--text-link);
+    color: var(--text-link);
+    font-size: 0.95em;
+    font-weight: 600;
+  }
+
+  /* ── CTA Banner ── */
+  .cta-section {
+    padding: 4em 3em;
+    margin: 3em 0;
+    text-align: center;
+    background: var(--background-body-alt, #f6f8fc);
+    border-radius: 12px;
+  }
+
+  .cta-section p {
+    font-size: 1.1em;
+    max-width: 560px;
+    margin: 0.75em auto 2em;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1100px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 800px) {
+    .home-container {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .cta-group {
+      justify-content: center;
+    }
+
+    .gravity-svg {
+      width: 220px;
+      height: 220px;
+    }
+
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-intro {
+      max-width: 100%;
+    }
+  }
+</style>
