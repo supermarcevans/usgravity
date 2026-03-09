@@ -9,6 +9,7 @@
 
 :root.theme-dark {
   --background-body: #202122;
+  --background-body-alt: #2a2b2d;
   --text-main: #fff;
   --text-secondary: #ccc;
   --primary-color: #548e9b;

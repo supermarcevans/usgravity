@@ -1,0 +1,37 @@
+<svg viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Orbit rings -->
+  <circle cx="170" cy="170" r="55"  stroke="#4f6ef7" stroke-width="1.2" opacity="0.38"/>
+  <circle cx="170" cy="170" r="100" stroke="#4f6ef7" stroke-width="1"   opacity="0.28"/>
+  <circle cx="170" cy="170" r="148" stroke="#4f6ef7" stroke-width="0.8" opacity="0.20"/>
+
+  <!-- Elliptical orbit path for satellite -->
+  <ellipse cx="170" cy="170" rx="100" ry="38" stroke="#4f6ef7" stroke-width="0.8" opacity="0.30" transform="rotate(-30 170 170)"/>
+
+  <!-- Satellite dot on ellipse -->
+  <circle cx="240" cy="140" r="5" fill="#4f6ef7" opacity="0.75"/>
+  <!-- Satellite signal lines -->
+  <line x1="240" y1="140" x2="252" y2="128" stroke="#4f6ef7" stroke-width="0.8" opacity="0.5"/>
+  <line x1="252" y1="128" x2="264" y2="120" stroke="#4f6ef7" stroke-width="0.6" opacity="0.35"/>
+
+  <!-- Second small body -->
+  <circle cx="108" cy="218" r="3.5" fill="#4f6ef7" opacity="0.55"/>
+
+  <!-- Gravitational pull dashes toward core -->
+  <line x1="240" y1="140" x2="210" y2="155" stroke="#4f6ef7" stroke-width="0.6" stroke-dasharray="3 4" opacity="0.4"/>
+  <line x1="108" y1="218" x2="145" y2="195" stroke="#4f6ef7" stroke-width="0.6" stroke-dasharray="3 4" opacity="0.4"/>
+
+  <!-- Core circle -->
+  <circle cx="170" cy="170" r="32" fill="#4f6ef7" opacity="0.12"/>
+  <circle cx="170" cy="170" r="32" stroke="#4f6ef7" stroke-width="1.5" opacity="0.7"/>
+
+  <!-- G letterform -->
+  <text x="170" y="178" text-anchor="middle" font-size="26" font-weight="900" font-family="system-ui, sans-serif" fill="#4f6ef7" opacity="0.9">G</text>
+
+  <!-- Tiny star accents -->
+  <circle cx="60"  cy="60"  r="1.5" fill="#4f6ef7" opacity="0.45"/>
+  <circle cx="290" cy="80"  r="1"   fill="#4f6ef7" opacity="0.35"/>
+  <circle cx="310" cy="260" r="1.5" fill="#4f6ef7" opacity="0.30"/>
+  <circle cx="40"  cy="280" r="1"   fill="#4f6ef7" opacity="0.35"/>
+  <circle cx="80"  cy="120" r="1"   fill="#4f6ef7" opacity="0.28"/>
+  <circle cx="270" cy="200" r="1"   fill="#4f6ef7" opacity="0.28"/>
+</svg>
