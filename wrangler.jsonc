@@ -13,5 +13,10 @@
   "assets": {
     "binding": "ASSETS",
     "directory": "dist"
+  },
+  "env": {
+    "staging": {
+      "name": "usgravity-staging"
+    }
   }
 }
