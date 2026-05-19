@@ -49,22 +49,25 @@ const permalink = `${Astro.site.href}about`;
         <h2>Hi, I'm Marc Evans.</h2>
 
         <p>
-          I'm a Virtual CIO and IT strategy consultant based in Denver, Colorado, working with companies across the United States. I align technology with where the business is actually going — without the cost of a full-time CIO hire.
+          I'm a Virtual CIO and IT strategy consultant based in Denver, Colorado, working with companies across the United States. I align your technology to your business strategy — without the cost of a full-time CIO hire.
         </p>
 
         <p>
-          Most small and mid-size companies don't need a CIO 40 hours a week. They need that level of thinking on the decisions that matter — the vendor selections, the strategic roadmap, the board-level conversation about technology risk. That's where I plug in.
+          Most small and mid-size companies don't need a CIO 40 hours a week. They need executive-level technology judgment on the decisions that matter most — vendor selections, the strategic roadmap, and the board-level conversation about technology risk.
         </p>
 
         <h2>What I Actually Do</h2>
 
         <p>
-          I scale to fit what your business actually needs — using the team and tools you already have.
+          I scale to fit what your business actually needs, using the team and tools you already have. A typical engagement looks like one or more of these:
         </p>
 
-        <p>
-          Sometimes that means working alongside a strong IT Manager who needs an executive partner for strategy, vendor selection, or board conversations — making them more effective, not replacing them. Sometimes it means coaching and developing an IT team into the high-performing function the business actually requires. Sometimes it means managing the relationship with your MSP or MSSP so you're getting full value for what you're paying. And sometimes it means filling a strategic gap until you're ready to hire a full-time IT executive.
-        </p>
+        <ul class="about-list">
+          <li>Partnering with a strong IT Manager who needs an executive backstop for strategy, vendor selection, or board conversations — making them more effective, not replacing them.</li>
+          <li>Coaching an existing IT team into the high-performing function the business actually requires.</li>
+          <li>Managing the relationship with your MSP or MSSP so you're getting full value for what you're paying.</li>
+          <li>Filling a strategic gap until you're ready to hire a full-time IT executive.</li>
+        </ul>
 
         <p>
           My job is to make your IT operation more <strong>aligned</strong>, more <strong>accountable</strong>, and more <strong>valuable to the business</strong> — without the overhead of another executive on payroll.
@@ -76,10 +79,10 @@ const permalink = `${Astro.site.href}about`;
           A few representative things I've delivered over my career:
         </p>
 
-        <ul class="track-record">
+        <ul class="about-list">
           <li><strong>OT systems running inside nuclear reactors</strong> — designed and built operational technology solutions deployed in active nuclear facilities, where reliability and regulatory rigor aren't optional.</li>
           <li><strong>Statewide AV platform for Colorado courts</strong> — created the audio/visual solution that became the standard for the Colorado State Judicial system and was adopted by several surrounding states.</li>
-          <li><strong>IT team turnarounds</strong> — repeatedly taken underperforming IT teams and turned them into the high-performing function the business actually needed, without replacing the people in seat.</li>
+          <li><strong>IT team turnarounds</strong> — repeatedly transformed underperforming IT teams into the high-performing function the business actually needed, without replacing the people in seat.</li>
           <li><strong>Compliance automation</strong> — helped companies automate the documentation, evidence collection, and controls that keep them audit-ready — across CMMC, SOC 2, HIPAA, and industry-specific frameworks.</li>
         </ul>
 
@@ -98,7 +101,7 @@ const permalink = `${Astro.site.href}about`;
         </p>
 
         <p>
-          That said, I've helped plenty of companies outside these sectors too. If your business is hitting a wall — scaling too fast, struggling with compliance, inheriting bad infrastructure, or simply lacking IT leadership — I can likely help.
+          I've also helped plenty of companies outside these sectors. If your business is hitting a wall — scaling too fast, struggling with compliance, inheriting bad infrastructure, or simply lacking IT leadership — I can likely help.
         </p>
 
         <h2>Why "Gravity"?</h2>
@@ -108,11 +111,15 @@ const permalink = `${Astro.site.href}about`;
         </p>
 
         <p>
-          Gravity is what holds it together — the strategic pull that keeps technology aligned with business goals, keeps vendors honest, keeps teams pointed in the same direction, and keeps the right decisions getting made even when the day-to-day pulls toward something easier.
+          Gravity is what holds it together — the strategic pull that keeps technology aligned with business goals, keeps vendors honest, keeps teams pointed in the same direction, and keeps the right decisions getting made even when day-to-day pressures push toward something easier.
         </p>
 
         <p>
-          The tagline — <em>Stratospheric thinking. Ground-level execution.</em> — is the job. The long view and the actual delivery, from one person who's accountable for both.
+          One person. The long view paired with actual delivery. Accountable for both.
+        </p>
+
+        <p class="tagline-line">
+          <em>Stratospheric thinking. Ground-level execution.</em>
         </p>
 
         <div class="about-cta">
@@ -237,16 +244,23 @@ const permalink = `${Astro.site.href}about`;
     font-weight: 700;
   }
 
-  .track-record {
-    padding-left: 1.2em;
+  .about-list {
+    padding-left: 1.3em;
     margin: 0.5em 0 1.5em;
+    font-size: 1.05em;
+    line-height: 1.7;
   }
 
-  .track-record li {
-    margin-bottom: 0.9em;
-    font-size: 1.02em;
-    line-height: 1.65;
+  .about-list li {
+    margin: 0.6em 0;
     color: var(--text-main);
+  }
+
+  .tagline-line {
+    text-align: center;
+    margin: 2em 0 0.5em;
+    font-size: 1.15em;
+    letter-spacing: 0.02em;
   }
 
   /* ── CTA ── */
