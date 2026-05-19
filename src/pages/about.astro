@@ -36,11 +36,11 @@ const permalink = `${Astro.site.href}about`;
 
     <div class="about-body">
       <figure class="about-image">
-        <div class="portrait-placeholder" aria-label="Marc Evans, Founder of Gravity Limited">
-          <div class="portrait-inner">
-            <span class="portrait-initials">ME</span>
+        <div class="portrait-wrap">
+          <img src="/assets/marc-evans.jpg" alt="Marc Evans, Founder of Gravity Limited" class="portrait-photo"/>
+          <div class="portrait-caption">
             <p class="portrait-name">Marc Evans</p>
-            <p class="portrait-title">Founder & Virtual CIO</p>
+            <p class="portrait-title">Founder &amp; Virtual CIO</p>
           </div>
         </div>
       </figure>
@@ -150,45 +150,44 @@ const permalink = `${Astro.site.href}about`;
     min-width: 0;
   }
 
-  /* ── Portrait Placeholder ── */
-  /* Replace this block with an <img> tag when a photo is available */
-  .portrait-placeholder {
+  /* ── Portrait ── */
+  .portrait-wrap {
+    position: relative;
     width: 240px;
-    height: 300px;
     border-radius: 10px;
-    background: linear-gradient(145deg, var(--text-link, #0066cc) 0%, #003880 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   }
 
-  .portrait-inner {
+  .portrait-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .portrait-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 0.6em 1em 0.75em;
     text-align: center;
     color: #fff;
   }
 
-  .portrait-initials {
-    display: block;
-    font-size: 3em;
-    font-weight: 900;
-    line-height: 1;
-    margin-bottom: 0.4em;
-    opacity: 0.9;
-  }
-
   .portrait-name {
-    font-size: 1em;
+    font-size: 0.95em;
     font-weight: 700;
     margin: 0 0 0.2em;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
   }
 
   .portrait-title {
-    font-size: 0.8em;
-    opacity: 0.75;
+    font-size: 0.78em;
+    opacity: 0.85;
     margin: 0;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
   }
 
   /* ── Content ── */
