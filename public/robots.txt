@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://usgravity.com/sitemap-index.xml
