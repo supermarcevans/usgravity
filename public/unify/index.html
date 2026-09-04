@@ -1,0 +1,1640 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Unification Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#f6f3ec;
+    --paper-2:#eeeadf;
+    --ink:#1c1a15;
+    --ink-soft:#3b382f;
+    --muted:#79735f;
+    --line:#ddd6c4;
+    --surface:#ffffff;
+    --surface-2:#efe9d8;
+    --accent:#a8632c;
+    --accent-ink:#ffffff;
+    --accent-soft:#f1e1cd;
+    --admin:#33586b;
+    --admin-soft:#dfe9ec;
+    --good:#3f6b3a;
+    --warn:#a8462c;
+    --shadow: 0 1px 2px rgba(28,26,21,.06), 0 8px 24px -12px rgba(28,26,21,.18);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#15140f;
+      --paper-2:#1b1a14;
+      --ink:#efe9da;
+      --ink-soft:#cdc5b0;
+      --muted:#938970;
+      --line:#332f24;
+      --surface:#1e1c15;
+      --surface-2:#26231a;
+      --accent:#e0975a;
+      --accent-ink:#1c1408;
+      --accent-soft:#392c1c;
+      --admin:#8fc4de;
+      --admin-soft:#1c2b32;
+      --good:#7fbf76;
+      --warn:#e0895f;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 28px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#15140f;
+    --paper-2:#1b1a14;
+    --ink:#efe9da;
+    --ink-soft:#cdc5b0;
+    --muted:#938970;
+    --line:#332f24;
+    --surface:#1e1c15;
+    --surface-2:#26231a;
+    --accent:#e0975a;
+    --accent-ink:#1c1408;
+    --accent-soft:#392c1c;
+    --admin:#8fc4de;
+    --admin-soft:#1c2b32;
+    --good:#7fbf76;
+    --warn:#e0895f;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 28px -14px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    font-size:16.5px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;
+    color:var(--ink);
+    text-wrap:balance;
+    margin:0 0 .5em 0;
+    line-height:1.15;
+  }
+  a{color:var(--accent);}
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-weight:600; letter-spacing:-0.01em; }
+  .mono-block{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.86em;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:.55em .8em;
+    display:inline-block;
+  }
+
+  /* ---------- shell ---------- */
+  .shell{ display:flex; min-height:100vh; }
+  .toc{
+    width:272px; flex:none;
+    border-right:1px solid var(--line);
+    padding:28px 20px 40px;
+    position:sticky; top:0; align-self:flex-start;
+    height:100vh; overflow-y:auto;
+    background:var(--paper-2);
+  }
+  .toc .brandmark{ display:flex; align-items:center; gap:10px; margin-bottom:26px; }
+  .toc .brandmark .mark{
+    width:34px; height:34px; border-radius:9px; background:var(--accent); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; font-family:"Fraunces",serif; font-weight:700; font-size:16px;
+  }
+  .toc .brandmark .name{ font-family:"Fraunces",serif; font-weight:600; font-size:15px; line-height:1.2; }
+  .toc .brandmark .sub{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+  .toc-list{ list-style:none; margin:0; padding:0; }
+  .toc-list li a{
+    display:flex; gap:10px; align-items:baseline;
+    text-decoration:none; color:var(--ink-soft);
+    font-size:13.5px; padding:6px 8px; border-radius:8px;
+  }
+  .toc-list li a:hover{ background:var(--surface-2); color:var(--ink); }
+  .toc-list li a .n{ font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--muted); width:16px; flex:none; }
+  .toc-list .bonus a{ color:var(--admin); }
+  .toc-foot{ margin-top:28px; padding-top:16px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted); }
+
+  main{ flex:1; min-width:0; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 48px; }
+  .col{ max-width:700px; }
+
+  /* ---------- cover ---------- */
+  .cover{
+    padding:88px 0 56px;
+    border-bottom:1px solid var(--line);
+  }
+  .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent);
+    font-weight:600; margin-bottom:18px;
+  }
+  .kicker::before{ content:""; width:22px; height:1.5px; background:var(--accent); display:inline-block; }
+  h1.title{ font-size:clamp(2.4rem, 4vw, 3.4rem); max-width:12ch; }
+  .dek{ font-size:1.2rem; color:var(--ink-soft); max-width:52ch; margin-top:10px; }
+  .cover-meta{ display:flex; gap:28px; margin-top:34px; flex-wrap:wrap; }
+  .cover-meta .stat b{ display:block; font-family:"Fraunces",serif; font-size:1.5rem; }
+  .cover-meta .stat span{ font-size:12.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+
+  /* ---------- generic sections ---------- */
+  section.chapter{ padding:56px 0; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  .eyebrow{ font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:10px;}
+  .eyebrow .num{ font-family:"IBM Plex Mono",monospace; color:var(--accent); }
+  h2.h{ font-size:1.9rem; }
+  p{ margin:0 0 1.05em 0; }
+  .lede{ font-size:1.08rem; color:var(--ink-soft); }
+  ul.plain, ol.plain{ padding-left:1.2em; margin:0 0 1.1em; }
+  ul.plain li, ol.plain li{ margin-bottom:.5em; }
+
+  .callout{
+    border-radius:var(--radius); padding:18px 20px; margin:20px 0;
+    border:1px solid var(--line); background:var(--surface);
+    box-shadow:var(--shadow);
+  }
+  .callout.attn{ border-color:var(--warn); background:linear-gradient(0deg, var(--surface), var(--surface)), transparent; }
+  .callout.attn .lbl{ color:var(--warn); }
+  .callout.admin{ border-color:var(--admin); }
+  .callout .lbl{ font-family:"IBM Plex Mono",monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); display:block; margin-bottom:6px; }
+
+  .tags{ display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 0; }
+  .tag{ font-size:11px; padding:3px 9px; border-radius:100px; border:1px solid var(--line); color:var(--muted); font-weight:600; letter-spacing:.02em;}
+  .tag.impact-user{ color:var(--warn); border-color:var(--warn); }
+  .tag.impact-security{ color:var(--good); border-color:var(--good); }
+  .tag.impact-effort{ color:var(--admin); border-color:var(--admin); }
+
+  .bonus-banner{
+    display:flex; align-items:center; gap:12px;
+    background:var(--admin-soft); border:1px solid var(--admin); color:var(--admin);
+    border-radius:100px; padding:6px 16px; font-size:12.5px; font-weight:600; letter-spacing:.02em;
+    width:fit-content; margin-bottom:18px;
+  }
+
+  table{ width:100%; border-collapse:collapse; font-size:14.5px; }
+  th,td{ text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th{ font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); margin:18px 0; }
+  .table-wrap table{ margin:0; }
+  td.yes{ color:var(--good); font-weight:700; }
+  td.no{ color:var(--muted); }
+  .wide{ max-width:960px; }
+
+  .steps{ counter-reset:step; list-style:none; margin:24px 0 0; padding:0; }
+  .steps > li{
+    counter-increment:step;
+    position:relative;
+    padding:0 0 30px 46px;
+    border-left:1px solid var(--line);
+    margin-left:15px;
+  }
+  .steps > li:last-child{ border-color:transparent; padding-bottom:0; }
+  .steps > li::before{
+    content: counter(step);
+    position:absolute; left:-15.5px; top:0;
+    width:31px; height:31px; border-radius:50%;
+    background:var(--surface); border:1.5px solid var(--accent); color:var(--accent);
+    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:13px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .steps h4{ font-size:1.1rem; margin-bottom:.3em; }
+  .who{ display:inline-flex; gap:5px; font-size:11px; margin-left:8px; vertical-align:middle;}
+  .who span{ padding:2px 8px; border-radius:100px; border:1px solid var(--line); color:var(--muted); font-weight:600;}
+
+  /* ---------- calculator ---------- */
+  .calc{
+    background:var(--surface); border:1px solid var(--line); border-radius:20px;
+    box-shadow:var(--shadow); padding:30px; margin-top:24px;
+    display:grid; grid-template-columns:1.1fr .9fr; gap:34px;
+  }
+  @media (max-width:820px){ .calc{ grid-template-columns:1fr; } }
+  .field{ margin-bottom:20px; }
+  .field label{ display:block; font-size:13px; font-weight:600; margin-bottom:8px; color:var(--ink-soft); }
+  .stepper{ display:flex; align-items:center; gap:14px; }
+  .stepper button{
+    width:32px; height:32px; border-radius:9px; border:1px solid var(--line); background:var(--surface-2);
+    color:var(--ink); font-size:16px; cursor:pointer; font-family:"IBM Plex Mono",monospace;
+  }
+  .stepper button:hover{ border-color:var(--accent); color:var(--accent); }
+  .stepper .val{ font-family:"IBM Plex Mono",monospace; font-size:18px; min-width:22px; text-align:center; }
+  .seg{ display:flex; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .seg button{
+    flex:1; padding:9px 10px; font-size:13px; border:none; background:var(--surface); color:var(--ink-soft);
+    cursor:pointer; font-family:"Source Sans 3",sans-serif; font-weight:600; border-right:1px solid var(--line);
+  }
+  .seg button:last-child{ border-right:none; }
+  .seg button.on{ background:var(--accent); color:var(--accent-ink); }
+  .toggle-row{ display:flex; align-items:center; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--line); }
+  .toggle-row:last-child{ border-bottom:none; }
+  .toggle-row .t-label{ font-size:14px; }
+  .toggle-row .t-label small{ display:block; color:var(--muted); font-size:12px; font-weight:400; }
+  .switch{ width:42px; height:24px; border-radius:100px; background:var(--surface-2); border:1px solid var(--line); position:relative; cursor:pointer; flex:none; }
+  .switch .knob{ position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:var(--muted); transition:transform .15s ease, background .15s ease; }
+  .switch.on{ background:var(--accent-soft); border-color:var(--accent); }
+  .switch.on .knob{ transform:translateX(18px); background:var(--accent); }
+
+  .result{ background:var(--surface-2); border-radius:16px; padding:24px; display:flex; flex-direction:column; }
+  .result .headline{ font-family:"Fraunces",serif; font-size:2.6rem; line-height:1; font-variant-numeric:tabular-nums; }
+  .result .headline span{ font-size:1.1rem; font-family:"Source Sans 3",sans-serif; color:var(--muted); font-weight:600; }
+  .result .sub{ color:var(--muted); font-size:13px; margin-top:6px; }
+  .result .split{ display:flex; gap:18px; margin-top:20px; padding-top:18px; border-top:1px solid var(--line); }
+  .result .split div b{ display:block; font-family:"IBM Plex Mono",monospace; font-size:1.2rem; }
+  .result .split div span{ font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
+  .result .note{ margin-top:18px; font-size:12.5px; color:var(--muted); line-height:1.5; }
+
+  /* ---------- decision cards ---------- */
+  .cards{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:20px 0; }
+  .cards.three{ grid-template-columns:repeat(3,1fr); }
+  @media (max-width:900px){ .cards.three{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:720px){ .cards{ grid-template-columns:1fr; } .cards.three{ grid-template-columns:1fr; } }
+  .card{ border:1px solid var(--line); border-radius:16px; padding:20px; background:var(--surface); }
+  .card.rec{ border-color:var(--accent); box-shadow:var(--shadow); }
+  .card .pick{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); font-weight:700; margin-bottom:8px; display:block;}
+  .card h4{ font-size:1.15rem; margin-bottom:6px; }
+  .card ul{ margin:10px 0 0; padding-left:1.1em; font-size:14px; color:var(--ink-soft); }
+  .card ul li{ margin-bottom:4px; }
+
+  /* ---------- high-level / detailed step toggle ---------- */
+  .hl-toggle{ display:inline-flex; border:1px solid var(--line); border-radius:10px; overflow:hidden; margin:10px 0 18px; }
+  .hl-toggle button{
+    padding:8px 14px; font-size:12.5px; font-weight:600; border:none; background:var(--surface); color:var(--ink-soft);
+    cursor:pointer; font-family:"Source Sans 3",sans-serif; border-right:1px solid var(--line);
+  }
+  .hl-toggle button:last-child{ border-right:none; }
+  .hl-toggle button.on{ background:var(--accent); color:var(--accent-ink); }
+  body.hl-mode .detail-steps{ display:none; }
+  body.hl-mode .hl-steps{ display:block; }
+  .hl-steps{ display:none; }
+  .hl-steps ul{ margin:0 0 1.1em; padding-left:1.2em; }
+  .hl-steps li{ margin-bottom:.4em; }
+
+  /* ---------- progress tracker ---------- */
+  .progress-box{ border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); padding:22px 24px; margin:22px 0; box-shadow:var(--shadow); }
+  .progress-box .p-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px; }
+  .progress-box .p-bar{ height:8px; border-radius:100px; background:var(--surface-2); overflow:hidden; margin:10px 0 16px; }
+  .progress-box .p-bar-fill{ height:100%; background:var(--accent); border-radius:100px; transition:width .2s ease; width:0%; }
+  .progress-box .p-count{ font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--muted); }
+  .checklist{ list-style:none; margin:0; padding:0; }
+  .checklist li{ border-bottom:1px solid var(--line); }
+  .checklist li:last-child{ border-bottom:none; }
+  .checklist label{ display:flex; align-items:center; gap:12px; padding:10px 2px; cursor:pointer; font-size:14.5px; }
+  .checklist input[type="checkbox"]{ width:18px; height:18px; flex:none; accent-color:var(--accent); }
+  .checklist .step-title{ flex:1; }
+  .checklist input:checked ~ .step-title{ color:var(--muted); text-decoration:line-through; }
+  .checklist .jump{ font-size:11.5px; color:var(--accent); text-decoration:none; flex:none; }
+  .p-resume{ font-size:13px; color:var(--ink-soft); background:var(--surface-2); border-radius:10px; padding:10px 14px; margin:14px 0; }
+  .p-resume a{ font-weight:600; }
+  .p-privacy{ font-size:12px; color:var(--muted); margin-top:14px; line-height:1.5; }
+  .p-clear{ font-size:12px; color:var(--muted); background:none; border:1px solid var(--line); border-radius:100px; padding:5px 12px; cursor:pointer; font-family:"Source Sans 3",sans-serif; margin-top:10px; }
+  .p-clear:hover{ border-color:var(--warn); color:var(--warn); }
+
+  /* ---------- optional side quest ---------- */
+  details.sidequest{ border:1px dashed var(--line); border-radius:var(--radius); padding:2px 20px; margin:22px 0; background:var(--surface); }
+  details.sidequest summary{ cursor:pointer; padding:14px 0; font-weight:600; list-style:none; display:flex; align-items:center; gap:10px; }
+  details.sidequest summary::-webkit-details-marker{ display:none; }
+  details.sidequest summary::before{ content:"+"; font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:16px; width:18px; }
+  details.sidequest[open] summary::before{ content:"–"; }
+  details.sidequest .sq-tag{ font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); border:1px solid var(--line); border-radius:100px; padding:2px 9px; font-weight:700; margin-left:auto; }
+  details.sidequest .sq-body{ padding-bottom:18px; }
+
+  /* ---------- contact reveal ---------- */
+  .reveal-btn{ background:var(--surface-2); border:1px solid var(--line); color:var(--ink); border-radius:100px; padding:8px 16px; font-size:13px; cursor:pointer; font-family:"Source Sans 3",sans-serif; font-weight:600; }
+  .reveal-btn:hover{ border-color:var(--accent); color:var(--accent); }
+
+  /* ---------- stepper grid (calculator) ---------- */
+  .stepper-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; }
+  .stepper-grid .field{ margin-bottom:0; }
+  .stepper-grid .stepper{ gap:10px; }
+
+  .footer{
+    padding:44px 0 60px; text-align:center;
+  }
+  .footer .stamp{ font-size:12px; color:var(--muted); opacity:.72; }
+  .footer .stamp a{ color:inherit; }
+
+  /* ---------- illustrative settings mockups ---------- */
+  .mockup{ border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:var(--surface); margin:18px 0 8px; box-shadow:var(--shadow); }
+  .mockup .chrome{ display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--surface-2); border-bottom:1px solid var(--line); }
+  .mockup .chrome .dot{ width:9px; height:9px; border-radius:50%; background:var(--line); flex:none; }
+  .mockup .chrome .addr{ flex:1; font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--muted); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:4px 10px; }
+  .mockup .panel{ padding:14px 18px 4px; }
+  .mockup .prow{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:10px 0; border-bottom:1px solid var(--line); font-size:13.5px; }
+  .mockup .prow:last-child{ border-bottom:none; }
+  .mockup .prow .k{ color:var(--ink-soft); }
+  .mockup .prow .v{ font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink); text-align:right; }
+  .mockup .pill{ font-size:10.5px; font-weight:700; padding:3px 10px; border-radius:100px; letter-spacing:.03em; flex:none; }
+  .mockup .pill.on{ background:var(--good); color:#fff; }
+  .mockup .pill.off{ background:var(--surface-2); color:var(--muted); border:1px solid var(--line); }
+  .mockup figcaption{ font-size:11.5px; color:var(--muted); padding:2px 18px 14px; font-style:italic; }
+
+  /* ---------- mobile chapter nav ---------- */
+  .mobile-nav{ display:none; }
+  .drawer, .drawer-scrim{ display:none; }
+  @media (max-width:980px){
+    .toc{ display:none; }
+    .wrap{ padding:0 24px; }
+    body{ padding-bottom:64px; }
+    .mobile-nav{
+      display:flex; position:fixed; left:0; right:0; bottom:0; z-index:40;
+      align-items:stretch; height:60px;
+      background:var(--surface); border-top:1px solid var(--line);
+      box-shadow:0 -6px 20px -10px rgba(0,0,0,.25);
+    }
+    .mobile-nav button{
+      flex:none; border:none; background:none; color:var(--ink-soft);
+      font-family:"Source Sans 3",sans-serif; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:2px; cursor:pointer; width:64px;
+    }
+    .mobile-nav button:disabled{ opacity:.35; }
+    .mobile-nav button .ic{ font-size:17px; line-height:1; font-family:"IBM Plex Mono",monospace; }
+    .mobile-nav button .lb{ font-size:9.5px; text-transform:uppercase; letter-spacing:.05em; }
+    .mobile-nav .chbtn{
+      flex:1; display:flex; flex-direction:row; align-items:center; justify-content:center; gap:8px;
+      border-left:1px solid var(--line); border-right:1px solid var(--line);
+      color:var(--accent); font-weight:700; font-size:13.5px;
+    }
+    .mobile-nav .chbtn .cur{ color:var(--muted); font-weight:400; font-size:11px; max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .drawer-scrim{
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:50;
+    }
+    .drawer-scrim.open{ display:block; }
+    .drawer{
+      display:block; position:fixed; left:0; right:0; bottom:0; z-index:51;
+      background:var(--paper-2); border-top:1px solid var(--line);
+      border-radius:18px 18px 0 0; max-height:72vh; overflow-y:auto;
+      padding:10px 8px 22px; box-shadow:0 -10px 30px -12px rgba(0,0,0,.4);
+      transform:translateY(100%); transition:transform .22s ease;
+    }
+    .drawer.open{ transform:translateY(0); }
+    .drawer .grabber{ width:36px; height:4px; border-radius:100px; background:var(--line); margin:6px auto 12px; }
+    .drawer .toc-list li a{ font-size:15px; padding:10px 14px; }
+  }
+
+  /* ---------- content filtering (calculator-driven) ---------- */
+  .filter-bar{
+    position:sticky; top:0; z-index:30;
+    display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;
+    background:var(--accent-soft); color:var(--ink); border-bottom:1px solid var(--accent);
+    padding:10px 24px; font-size:13px; text-align:center;
+  }
+  .filter-bar button{
+    background:var(--accent); color:var(--accent-ink); border:none; border-radius:100px;
+    padding:6px 14px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:"Source Sans 3",sans-serif;
+    flex:none;
+  }
+  .filter-bar button:hover{ opacity:.88; }
+  .show-all-row{ margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+  .show-all-toggle{ display:flex; align-items:flex-start; gap:10px; font-size:12.5px; color:var(--ink-soft); cursor:pointer; }
+  .show-all-toggle input{ margin-top:3px; accent-color:var(--accent); flex:none; }
+  .toc-list li.toc-hidden > a{ opacity:.45; }
+  .toc-list li.toc-hidden > a .hidden-flag{ display:block; font-size:10px; font-style:italic; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="toc">
+    <div class="brandmark">
+      <div class="mark" id="brandMark">U</div>
+      <div>
+        <div class="name" id="brandName">Unification Project</div>
+        <div class="sub" id="brandSub">Free field guide</div>
+      </div>
+    </div>
+    <ul class="toc-list">
+      <li><a href="#foreword"><span class="n">00</span> Foreword</a></li>
+      <li><a href="#is-this-you"><span class="n">01</span> Is this you?</a></li>
+      <li><a href="#shape"><span class="n">02</span> The shape of the fix</a></li>
+      <li><a href="#calculator"><span class="n">03</span> Estimate your time</a></li>
+      <li><a href="#hub"><span class="n">04</span> Choose your personal hub</a></li>
+      <li><a href="#calendar"><span class="n">05</span> Contacts &amp; calendar defaults</a></li>
+      <li><a href="#licenses"><span class="n">06</span> License what you need</a></li>
+      <li><a href="#build"><span class="n">07</span> The build order</a></li>
+      <li><a href="#new-tenant"><span class="n">08</span> Secure your new tenant</a></li>
+      <li><a href="#meetings"><span class="n">09</span> Zoom, Teams &amp; meetings</a></li>
+      <li><a href="#sharing"><span class="n">10</span> When your companies work together</a></li>
+      <li><a href="#forwarding"><span class="n">11</span> Retiring your old inbox</a></li>
+      <li><a href="#yubikey"><span class="n">12</span> A physical key</a></li>
+      <li class="bonus"><a href="#admin-bonus"><span class="n">★</span> Bonus: for your admin</a></li>
+      <li><a href="#faq"><span class="n">13</span> FAQ</a></li>
+    </ul>
+    <div class="toc-foot" id="tocFoot">A free resource. Take it, use it, keep it.</div>
+  </nav>
+
+  <main>
+    <div class="filter-bar" id="filterBar" hidden>
+      <span>Showing only the sections that match your calculator answers.</span>
+      <button type="button" id="filterBarShowAll">Show everything</button>
+    </div>
+    <div class="wrap">
+
+      <section class="cover">
+        <div class="col">
+          <div class="kicker">Free guide · Executives &amp; the admins who support them</div>
+          <h1 class="title">The Unification Project</h1>
+          <p class="dek">You run more than one email address and probably more than one company. This is how to put it all on your laptop and your phone — safely, without your IT admin finding out from a breach report.</p>
+          <div class="cover-meta">
+            <div class="stat"><b>2</b><span>Devices, one identity</span></div>
+            <div class="stat"><b>&lt;1 day</b><span>Typical build time</span></div>
+            <div class="stat"><b>2 tracks</b><span>Exec + Admin</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="foreword">
+        <div class="col">
+          <div class="eyebrow"><span class="num">00</span> Foreword</div>
+          <h2 class="h">This isn't best practice. It's the best version of your practice.</h2>
+          <p class="lede">Best practice says don't do this at all. One identity, one device, keep personal and business fully separate — every company, kept on its own hardware, never touching your own inbox. That's the textbook answer, and it's correct.</p>
+          <p>You're not going to do that. You own more than one company, or you sit on more than one board, or you're the CEO who also has a life outside the P&amp;L — and you're going to check all of it from the same phone regardless of what any policy says. That's not a failure of discipline. It's just what running things actually looks like once you're senior enough that "just don't do that" stops being a real option.</p>
+          <p>Fine. If you're going to blend personal and multiple companies on one laptop and phone anyway, this guide is how to do it as securely, as manageable for your IT admin, and as close to real best practice as the situation allows. It starts from the constraint instead of pretending it away. Every choice below is the most secure, most supportable version of an inherently compromised arrangement — built so your IT admin can sleep, and so you don't have to think about any of it again after the first afternoon.</p>
+          <div class="callout">
+            <span class="lbl">Read this before you build anything</span>
+            One rule survives every version of this guide: <b>business mailboxes never forward mail out, and never accept a forward in.</b> Everything else here is about making two or three Microsoft <b>tenants</b> — Microsoft's term for a separate, self-contained business account, one per company — and one personal life share a device peacefully. That one rule is what keeps them from also sharing their mail.
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="is-this-you">
+        <div class="col">
+          <div class="eyebrow"><span class="num">01</span> Is this you?</div>
+          <h2 class="h">The shape of the problem</h2>
+          <p>This guide is for exactly one situation. If it doesn't describe you, most of it still applies — just skip what doesn't.</p>
+          <ul class="plain">
+            <li>You have a personal email address (Gmail, Yahoo, AOL, or your own domain) that's been yours for years and isn't going anywhere.</li>
+            <li>You have one or two Microsoft 365 business accounts — your own company, a company you invested in, a board seat, a family business — and they're run by different IT admins who don't talk to each other.</li>
+            <li>You want to check all of it from one laptop and one phone, without three different sign-in prompts fighting for your attention every time you tap the mail icon.</li>
+            <li>You are willing to accept that this device will never be as clean as a single-purpose company laptop — in exchange for it being <i>usable</i>.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="chapter" id="shape">
+        <div class="col">
+          <div class="eyebrow"><span class="num">02</span> The shape of the fix</div>
+          <h2 class="h">One hub. Everything else layers underneath it.</h2>
+          <p class="lede">The whole guide is one idea, applied consistently: pick a single personal identity as your contacts-and-calendar hub, then add every business mailbox to your devices as a guest — never as the owner, and never with a return path back out.</p>
+        </div>
+        <div class="wide">
+          <svg viewBox="0 0 960 300" role="img" aria-labelledby="archTitle" style="width:100%; height:auto; margin-top:8px;">
+            <title id="archTitle">Diagram: personal hub in the center, two business tenants and legacy personal mail feeding in one-way, laptop and phone layered on top, nothing feeding back out</title>
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--muted)"/></marker>
+            </defs>
+            <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-soft)">
+              <circle cx="480" cy="150" r="72" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+              <text x="480" y="145" text-anchor="middle" font-family="Fraunces, serif" font-size="17" fill="var(--ink)">Personal hub</text>
+              <text x="480" y="164" text-anchor="middle" font-size="11" fill="var(--muted)">contacts + calendar</text>
+
+              <rect x="40" y="40" width="180" height="56" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+              <text x="130" y="63" text-anchor="middle" fill="var(--ink)">Legacy personal</text>
+              <text x="130" y="80" text-anchor="middle" font-size="11" fill="var(--muted)">Yahoo / AOL — retiring</text>
+              <line x1="220" y1="70" x2="405" y2="128" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#arrow)"/>
+
+              <rect x="740" y="40" width="180" height="56" rx="10" fill="var(--admin-soft)" stroke="var(--admin)"/>
+              <text x="830" y="63" text-anchor="middle" fill="var(--ink)">Northline Metal Works</text>
+              <text x="830" y="80" text-anchor="middle" font-size="11" fill="var(--muted)">daily driver, device-joined, no forward</text>
+              <line x1="740" y1="70" x2="552" y2="128" stroke="var(--admin)" stroke-width="1.4" stroke-dasharray="4 4"/>
+
+              <rect x="740" y="204" width="180" height="56" rx="10" fill="var(--admin-soft)" stroke="var(--admin)"/>
+              <text x="830" y="227" text-anchor="middle" fill="var(--ink)">Vantage Public Affairs</text>
+              <text x="830" y="244" text-anchor="middle" font-size="11" fill="var(--muted)">app-only, no device join, no forward</text>
+              <line x1="740" y1="232" x2="552" y2="172" stroke="var(--admin)" stroke-width="1.4" stroke-dasharray="4 4"/>
+
+              <rect x="40" y="204" width="180" height="56" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+              <text x="130" y="227" text-anchor="middle" fill="var(--ink)">Laptop + phone</text>
+              <text x="130" y="244" text-anchor="middle" font-size="11" fill="var(--muted)">both devices, layered on top</text>
+              <line x1="220" y1="232" x2="405" y2="172" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#arrow)"/>
+            </g>
+          </svg>
+          <p style="font-size:12.5px; color:var(--muted); margin-top:-6px;">Solid arrow = mail actually forwards this direction. Dashed line = mail is <i>added as an account</i>, never forwarded — the tenant keeps its own mailbox and nothing leaves it.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="calculator">
+        <div class="col">
+          <div class="eyebrow"><span class="num">03</span> Estimate your time</div>
+          <h2 class="h">How long this actually takes</h2>
+          <p class="lede">Answer a few questions about your actual setup. This is the same estimate we quote clients for the exact same build — adjusted up if you're doing it yourself instead of handing it to an admin. Your answers are remembered if you come back.</p>
+        </div>
+        <div class="calc">
+          <div class="calc-inputs">
+            <div class="field">
+              <label>Business Microsoft tenants involved</label>
+              <div class="stepper">
+                <button type="button" data-step="tenants" data-dir="-1">–</button>
+                <span class="val" id="val-tenants">1</span>
+                <button type="button" data-step="tenants" data-dir="1">+</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Personal hub</label>
+              <div class="seg" id="seg-hub">
+                <button type="button" data-hub="gmail" class="on">Gmail</button>
+                <button type="button" data-hub="m365">M365 Business Basic</button>
+                <button type="button" data-hub="workspace">Cloudflare + Workspace</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Devices to configure</label>
+              <div class="stepper-grid">
+                <div class="field">
+                  <small style="color:var(--muted); font-size:12px;">Laptops</small>
+                  <div class="stepper">
+                    <button type="button" data-step="laptops" data-dir="-1">–</button>
+                    <span class="val" id="val-laptops">1</span>
+                    <button type="button" data-step="laptops" data-dir="1">+</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <small style="color:var(--muted); font-size:12px;">Phones</small>
+                  <div class="stepper">
+                    <button type="button" data-step="phones" data-dir="-1">–</button>
+                    <span class="val" id="val-phones">1</span>
+                    <button type="button" data-step="phones" data-dir="1">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label>Legacy accounts to retire</label>
+              <div class="stepper-grid">
+                <div class="field">
+                  <small style="color:var(--muted); font-size:12px;">Yahoo</small>
+                  <div class="stepper">
+                    <button type="button" data-step="yahoo" data-dir="-1">–</button>
+                    <span class="val" id="val-yahoo">1</span>
+                    <button type="button" data-step="yahoo" data-dir="1">+</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <small style="color:var(--muted); font-size:12px;">AOL</small>
+                  <div class="stepper">
+                    <button type="button" data-step="aol" data-dir="-1">–</button>
+                    <span class="val" id="val-aol">0</span>
+                    <button type="button" data-step="aol" data-dir="1">+</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <small style="color:var(--muted); font-size:12px;">Old Gmail</small>
+                  <div class="stepper">
+                    <button type="button" data-step="gmailLegacy" data-dir="-1">–</button>
+                    <span class="val" id="val-gmailLegacy">0</span>
+                    <button type="button" data-step="gmailLegacy" data-dir="1">+</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <small style="color:var(--muted); font-size:12px;">Everything else</small>
+                  <div class="stepper">
+                    <button type="button" data-step="other" data-dir="-1">–</button>
+                    <span class="val" id="val-other">0</span>
+                    <button type="button" data-step="other" data-dir="1">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <div class="t-label">Adding a hardware key<small>YubiKey or similar, per device owner</small></div>
+              <div class="switch" id="tog-yubikey"><div class="knob"></div></div>
+            </div>
+            <div class="toggle-row">
+              <div class="t-label">Doing this yourself<small>Off = your IT admin does it</small></div>
+              <div class="switch on" id="tog-diy"><div class="knob"></div></div>
+            </div>
+          </div>
+          <div class="result">
+            <div class="sub">Estimated time</div>
+            <div class="headline" id="calc-headline">–<span> hrs</span></div>
+            <div class="sub" id="calc-context">—</div>
+            <div class="split">
+              <div><b id="split-admin">–</b><span>If an admin does it</span></div>
+              <div><b id="split-diy">–</b><span>If you DIY</span></div>
+            </div>
+            <div class="note">Rough guide, not a quote. Two tenants with prior conditional-access lockouts, forgotten admin passwords, or a company that's merged/renamed recently will run longer — see the Foreword.</div>
+            <div class="show-all-row">
+              <label class="show-all-toggle">
+                <input type="checkbox" id="calcShowAll">
+                <span>Once you start answering above, we'll only show the setup steps that match your answers. Check this to always show every section instead.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="hub">
+        <div class="col">
+          <div class="eyebrow"><span class="num">04</span> Choose your personal hub</div>
+          <h2 class="h">Where your contacts and calendar actually live</h2>
+          <p class="lede">Every business account you add gets layered underneath this one identity. Get this choice right and everything downstream gets easier.</p>
+        </div>
+
+        <div class="cards three">
+          <div class="card">
+            <span class="pick">Also fine</span>
+            <h4>Free personal Gmail</h4>
+            <p style="font-size:14px; color:var(--ink-soft);">If you already have a Gmail you've used for a decade, there's no urgent reason to move. Simplest possible path — if you're fine living with Google's quirks.</p>
+            <ul>
+              <li>Zero cost, zero setup</li>
+              <li>Fine indefinitely if you're not precious about the address</li>
+            </ul>
+          </div>
+          <div class="card rec">
+            <span class="pick">We recommend this</span>
+            <h4>Custom domain via Microsoft 365 Business Basic</h4>
+            <p style="font-size:14px; color:var(--ink-soft);">A single self-administered, one-person Microsoft 365 tenant — roughly $6–8.40/user/month depending on billing. Yes, it's technically a tiny business tenant, but you're the only person in it and you administer it yourself. This is how you get a real custom domain through Microsoft <i>without an MSP</i>, now that Microsoft's old personal-tier custom-domain option is gone (see below).</p>
+            <ul>
+              <li>Self-service, no MSP or IT department needed</li>
+              <li>A real custom domain address you control</li>
+              <li>Outlook.com-grade rules engine, same server-side reliability taught in Chapter 7</li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="pick">A third option</span>
+            <h4>Own domain via Cloudflare + Google Workspace</h4>
+            <p style="font-size:14px; color:var(--ink-soft);">Register a domain through Cloudflare (~$10–15/yr), route it to a Google account. A solid alternative specifically for people who want to stay in Google's ecosystem for their own custom domain.</p>
+            <ul>
+              <li>Cloudflare Email Routing forwards it for free — no separate mail hosting bill</li>
+              <li>Survives you leaving Google entirely later — the domain moves with you</li>
+            </ul>
+            <p style="font-size:12.5px; color:var(--muted); margin:12px 0 0;">Doesn't have to catch everything — in the <a href="https://dash.cloudflare.com" target="_blank" rel="noopener">Cloudflare dashboard</a>'s Email Routing rule you can exclude specific senders or domains if you want a few things to stay on the old address.</p>
+          </div>
+        </div>
+
+        <div class="callout attn">
+          <span class="lbl">Watch for this one</span>
+          Microsoft's consumer plans — Microsoft 365 Personal and Family — don't support adding a custom domain. If you want a custom domain through Microsoft without an MSP, Business Basic (above) is the real path.
+        </div>
+
+        <div class="callout attn">
+          <span class="lbl">Pay attention</span>
+          The <b>recommended default recipient for forwarded mail is your Business Basic custom domain mailbox</b> — that's what "a personal Microsoft account" means throughout this guide — despite being more setup work than Gmail. Two reasons: its rules and categories mirror what you already use for work, and its web-based rules are server-side and survive your laptop being off, exactly like the OWA rule-reliability behavior taught in Chapter 7. A free consumer account at outlook.com or live.com is <b>not</b> what we mean by this and isn't something we recommend setting up new — it's a real mailbox on Microsoft's shared consumer service, not a tenant you administer, so there's no real way for anyone to help manage it later if you ever want that. <b>Gmail remains a completely valid, simpler fallback</b> if you'd rather not add another Microsoft account to the mix — it's just not the default recommendation.
+          <div class="tags"><span class="tag impact-security">Security: comparable</span><span class="tag impact-effort">Effort: Microsoft costs more setup time</span></div>
+        </div>
+
+        <p><b>Out options (retiring these as active inboxes):</b> Yahoo, AOL, and optionally an old Gmail or Hotmail/Outlook.com/Live account. <b>In option (the hub itself):</b> your Business Basic custom domain (recommended), or Gmail (simpler fallback) — never a free consumer Microsoft account, and never a business tenant. Business mailboxes are never a valid forwarding target, in either direction — see <a href="#step-7">the confirmation step in Chapter 7</a>.</p>
+
+        <div class="hl-toggle" role="group" aria-label="Detail level">
+          <button type="button" class="hl-btn" data-level="hl">High-level</button>
+          <button type="button" class="hl-btn on" data-level="detail">Detailed steps</button>
+        </div>
+        <div class="callout" style="margin-top:0;">
+          <span class="lbl">Before you follow these literally</span>
+          Providers change their settings screens over time. If a detailed step below doesn't match what's on your screen, fall back to the high-level version — look for a gear icon and, if the settings page has one, a search box you can type "Forwarding" or "Domains" into.
+        </div>
+
+        <div data-gate="hub:m365">
+        <h3 style="margin-top:30px;">Setting up a custom domain via Microsoft 365 Business Basic</h3>
+        <div class="hl-steps">
+          <ul>
+            <li>Sign up for Business Basic at microsoft.com.</li>
+            <li>In the Microsoft 365 admin center, go to Settings → Domains → Add domain.</li>
+            <li>Run the verification wizard (one-click via Domain Connect on supported registrars like GoDaddy, or manual TXT/MX records otherwise).</li>
+          </ul>
+        </div>
+        <ol class="plain detail-steps" style="list-style:decimal;">
+          <li>Sign up at <a href="https://www.microsoft.com/microsoft-365/business/microsoft-365-business-basic" target="_blank" rel="noopener">microsoft.com/microsoft-365/business/microsoft-365-business-basic</a> — this creates your own one-person tenant.</li>
+          <li>Sign in to the <a href="https://admin.microsoft.com" target="_blank" rel="noopener">Microsoft 365 admin center</a> and go to <b>Settings → Domains → Add domain</b>.</li>
+          <li>Enter the domain you already own (or register one first through any registrar).</li>
+          <li>If your registrar is a Domain Connect partner (GoDaddy and several others), the wizard verifies and configures DNS in close to one click. Otherwise, you'll add a few technical domain-ownership records manually — a <b>TXT record</b> to prove you own the domain, then <b>MX</b> and <b>CNAME</b> records to point mail at Microsoft. If those terms are unfamiliar, your domain registrar's own support chat can usually paste these in for you — this one step is also easy to hand to any IT-savvy contact.</li>
+          <li>Once verified, create your mailbox on the new domain (e.g. <span class="mono-block">jamie.castell@yourdomain.com</span>) and set it as your primary address.</li>
+        </ol>
+        <p style="font-size:13px; color:var(--muted);">Source: <a href="https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain" target="_blank" rel="noopener">learn.microsoft.com — Add a domain →</a></p>
+        <figure class="mockup wide" style="margin-left:0; margin-right:0;">
+          <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="addr">admin.microsoft.com/Adminportal/Home#/Domains</span></div>
+          <div class="panel">
+            <div class="prow"><span class="k">Domain</span><span class="v">yourdomain.com</span></div>
+            <div class="prow"><span class="k">Domain Connect (GoDaddy, etc.)</span><span class="pill on">AVAILABLE</span></div>
+            <div class="prow"><span class="k">Verification status</span><span class="pill on">VERIFIED</span></div>
+          </div>
+          <figcaption>What you'll roughly see under Settings → Domains — exact layout may vary.</figcaption>
+        </figure>
+        </div>
+
+        <h3 style="margin-top:34px;">Retiring an old Outlook.com, Live, or Hotmail account</h3>
+        <p style="font-size:14px; color:var(--ink-soft);">If you've had a free outlook.com, live.com, or hotmail.com account for years and want to fold it into your new hub, forward it the same way you would Yahoo or AOL below — this isn't the recommended hub itself, just how you retire one of these as an active inbox.</p>
+        <div class="hl-steps">
+          <ul>
+            <li>Settings gear → Mail → Forwarding → enable, enter the forwarding address, save.</li>
+          </ul>
+        </div>
+        <ol class="plain detail-steps" style="list-style:decimal;">
+          <li>Sign in at <a href="https://outlook.com" target="_blank" rel="noopener">outlook.com</a> and click the <b>Settings</b> (gear) icon.</li>
+          <li>Go to <b>Mail → Forwarding</b>.</li>
+          <li>Toggle <b>Enable forwarding</b> on.</li>
+          <li>Enter the forwarding address you want mail routed to — your Business Basic custom domain mailbox, or Gmail.</li>
+          <li>Optionally check <b>Keep a copy of forwarded messages</b> in this mailbox.</li>
+          <li>Click <b>Save</b>.</li>
+        </ol>
+        <p style="font-size:13px; color:var(--ink-soft);">If two-step verification isn't already on for this Microsoft account, turning on forwarding will prompt you to enable it — that's expected, not an error.</p>
+        <figure class="mockup wide" style="margin-left:0; margin-right:0;">
+          <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="addr">outlook.live.com/mail/options/mail/forwarding</span></div>
+          <div class="panel">
+            <div class="prow"><span class="k">Enable forwarding</span><span class="pill on">ON</span></div>
+            <div class="prow"><span class="k">Forward to</span><span class="v">jamie.castell@yourdomain.com</span></div>
+            <div class="prow"><span class="k">Keep a copy of forwarded messages</span><span class="pill off">OFF</span></div>
+          </div>
+          <figcaption>What you'll roughly see under Settings → Mail → Forwarding — exact layout may vary.</figcaption>
+        </figure>
+
+        <div data-gate="legacy:gmailLegacy">
+        <h3 style="margin-top:34px;">Gmail forwarding (if retiring an old Gmail as legacy)</h3>
+        <div class="hl-steps">
+          <ul>
+            <li>Settings gear → See all settings → Forwarding and POP/IMAP → Add a forwarding address → verify the confirmation link → come back and turn it on.</li>
+          </ul>
+        </div>
+        <ol class="plain detail-steps" style="list-style:decimal;">
+          <li>Click the <b>Settings</b> (gear) icon in Gmail, then <b>See all settings</b>.</li>
+          <li>Open the <b>Forwarding and POP/IMAP</b> tab.</li>
+          <li>Click <b>Add a forwarding address</b>, enter the address, then <b>Next → Proceed → OK</b>.</li>
+          <li>Gmail emails a confirmation link to the new address — open it and click the link.</li>
+          <li>Back in Gmail Settings, refresh the page and revisit <b>Forwarding and POP/IMAP</b>.</li>
+          <li>Select <b>Forward a copy of incoming mail to [address]</b> and choose what happens to Gmail's own copy.</li>
+          <li>Click <b>Save Changes</b>.</li>
+        </ol>
+        <p style="font-size:13px; color:var(--ink-soft);"><b>Want partial forwarding instead of everything?</b> Disable the blanket auto-forward above, then use <b>Show search options</b> to build filter criteria, click <b>Create filter</b>, check <b>Forward it</b>, pick the address, and click <b>Create filter</b> again.</p>
+        <p style="font-size:13px; color:var(--muted);">Source: <a href="https://support.google.com/mail/answer/10957" target="_blank" rel="noopener">support.google.com/mail/answer/10957 →</a></p>
+        </div>
+      </section>
+
+      <section class="chapter" id="calendar">
+        <div class="col">
+          <div class="eyebrow"><span class="num">05</span> Contacts &amp; calendar defaults</div>
+          <h2 class="h">Contacts stay personal. Calendar doesn't.</h2>
+          <p class="lede">These two get confused constantly, and the right default is different for each one — so treat them as two separate decisions, not one.</p>
+          <p><b>Contacts:</b> unchanged from Chapter 4 — your personal hub (your Business Basic custom domain, or Gmail) stays the seamless primary contacts store on both devices. Every business colleague, vendor, and old Yahoo-era connection ends up findable from one address book, because it's the one identity that isn't tied to a company that could revoke your access to it.</p>
+          <p><b>Calendar:</b> a different default. On the <b>laptop</b>, set the default calendar to whichever business calendar you actually live in day to day — for most people that's the daily-driver tenant (Northline Metal Works in our running example), not the personal hub. New events you create without thinking about it should land as business meetings, because that's what most of your day actually is. We'd recommend the same business-default on the <b>phone</b> — but the phone is also where you'll want to manually pick your personal calendar per-appointment for the kid's recital or your own doctor's visit, rather than have it default there.</p>
+        </div>
+        <div class="callout attn">
+          <span class="lbl">Pay attention</span>
+          Some people will instead want their <b>phone's</b> default calendar to be personal, flipping the recommendation above. That's a perfectly reasonable choice — but it <b>splits the experience at the device level</b>: you now have to actively think about which calendar you're in on each device, instead of one consistent default everywhere. Make the choice deliberately, not by accident.
+          <div class="tags"><span class="tag impact-user">User impact: your call</span><span class="tag impact-effort">Effort: 2 min per device</span></div>
+        </div>
+
+        <div class="callout">
+          <span class="lbl">One app, one look, on both platforms</span>
+          Our default recommendation for the phone itself: install the <b>Microsoft Outlook app</b> — on iPhone and on Android — and run mail, calendar, and contacts for <i>everything</i> through it, including your personal hub. Outlook's mobile app supports adding Gmail and other personal accounts right alongside your Microsoft ones, so instead of juggling native Mail, native Calendar, native Contacts, and a separate Gmail app, you get one consistent app and one consistent look across every account, on both iPhone and Android. We still cover the native OS-level settings below, because some readers won't use Outlook mobile — but Outlook is the lead recommendation.
+        </div>
+
+        <h3 style="margin-top:34px;">Setting the actual defaults: iPhone and Android</h3>
+        <p class="lede" style="font-size:1rem;">General framing is easy; the actual OS settings are buried and differ completely by platform. Here's exactly where to go on each.</p>
+
+        <h4 style="margin-top:20px;">If you use the Outlook app (recommended)</h4>
+        <p>Outlook's own <b>Settings → Calendar → Default Calendar</b> picks which calendar new events land on when you create one without explicitly choosing — set it to your business calendar, matching the recommendation above. For contacts, Outlook syncs per account rather than through one global default: on iPhone, go to <b>Settings → [account] → Save Contacts</b> and choose to save to your iPhone for your personal hub account; on Android, it's <b>Settings → Accounts → [account] → Sync Contacts</b>. Turn this on only for your personal hub account so new contacts consistently land in the one address book from Chapter 4, not scattered across whichever account you happened to be in.</p>
+        <p style="font-size:13px; color:var(--ink-soft);">Outlook's own default-calendar control has moved between app versions before, especially on Android — if <b>Settings → Calendar → Default Calendar</b> isn't where you expect it, the reliable fallback is the same trick as the native-Android workaround below: only enable Calendar sync for the account you want new events to land on.</p>
+
+        <h4 style="margin-top:26px;">iPhone (native Mail/Calendar/Contacts)</h4>
+        <ul class="plain">
+          <li><b>Contacts default:</b> <span class="mono-block">Settings → Apps → Contacts → Default Account</span> — set to your personal hub account. This option only appears once more than one account has Contacts turned on; with just one account there's nothing to choose.</li>
+          <li><b>Calendar default:</b> <span class="mono-block">Settings → Apps → Calendar → Default Calendar</span> — set to your business calendar, per the recommendation above. Same override-per-event behavior applies: the default only decides what happens when you don't pick one.</li>
+          <li style="font-size:13px; color:var(--muted);">On older iOS versions, these same settings live directly under <span class="mono-block">Settings → Contacts</span> and <span class="mono-block">Settings → Calendar</span>, without the "Apps" step — Apple moved per-app settings under Settings → Apps starting with iOS 18.</li>
+        </ul>
+
+        <h4 style="margin-top:26px;">Android (native Google/Samsung apps — messier, be aware)</h4>
+        <p>Android doesn't have one clean equivalent to iOS's toggles, and what you do depends on which apps you're actually using:</p>
+        <ul class="plain">
+          <li><b>Default account for new contacts, Google Contacts app:</b> open Google Contacts → tap your profile picture → <span class="mono-block">Contacts app settings</span> → <span class="mono-block">Default account for new contacts</span> → choose your personal hub account.</li>
+          <li><b>Default account for new contacts, Samsung Contacts app:</b> open Samsung Contacts → the three-line menu → <span class="mono-block">Manage contacts</span> → <span class="mono-block">Set default storage location</span> → choose your personal hub account.</li>
+          <li><b>Calendar default — the honest answer:</b> stock Google Calendar does not have one reliable cross-account default the way iOS does. Each Google account can have its own default calendar for events created <i>while that account is selected</i> (in the app, tap the menu → your account email → <span class="mono-block">Default calendar</span>), but when a phone has several different accounts configured — a personal Google account plus a separate Microsoft/Exchange account — which one a brand-new event actually lands on tends to follow whichever calendar you last viewed or created an event in, not a fixed setting. This is a long-standing, widely reported source of confusion (Google's own feature-request tracker has an open request for a real cross-account default), not something you're doing wrong.</li>
+        </ul>
+        <p style="font-size:14px; color:var(--ink-soft);">This is exactly the gap the Outlook app closes: Outlook applies one default-calendar setting across every account it manages, sidestepping the account-switching ambiguity that stock Google Calendar has on Android. It's the single most concrete reason to prefer Outlook over stock Google apps on an Android device carrying both a business tenant and a personal hub.</p>
+        <div class="tags"><span class="tag impact-user">User-facing</span><span class="tag impact-effort">Effort: 5 min per device</span></div>
+      </section>
+
+      <section class="chapter" id="licenses">
+        <div class="col">
+          <div class="eyebrow"><span class="num">06</span> License what you need</div>
+          <h2 class="h">The Microsoft 365 matrix that actually matters</h2>
+          <p class="lede">Setting the marketing names aside, here's what each tier actually buys you, for the features an executive notices.</p>
+        </div>
+        <div class="table-wrap wide">
+          <table>
+            <tr><th>What you get</th><th>Business Basic</th><th>Business Standard</th><th>Business Premium</th></tr>
+            <tr><td>Outlook on the web &amp; mobile app</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Desktop versions of Word / Excel / PowerPoint / Outlook</td><td class="no">No — web only</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Self-service password reset (SSPR)</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Conditional Access (the policies in the admin bonus chapter)</td><td class="no">No — needs Entra ID P1</td><td class="no">No — needs Entra ID P1</td><td class="yes">Yes, included</td></tr>
+            <tr><td>Device compliance / Intune management</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
+            <tr><td>Advanced phishing &amp; malware protection</td><td class="no">Basic only</td><td class="no">Basic only</td><td class="yes">Yes (Defender)</td></tr>
+          </table>
+        </div>
+        <div class="callout attn">
+          <span class="lbl">Pay attention</span>
+          If your admin wants to use the Conditional Access playbook in the admin bonus chapter for your account specifically, you need at least <b>Entra ID P1</b> (Microsoft's identity and access-management add-on — separate from your mailbox plan, and what unlocks Conditional Access) — bundled into Business Premium, or purchasable as an add-on to a cheaper plan. This is usually the single highest-leverage dollar you'll spend in this whole project.
+          <div class="tags"><span class="tag impact-security">Security: high</span><span class="tag impact-effort">Effort: none — it's a license, not a project</span></div>
+        </div>
+      </section>
+
+      <section class="chapter" id="build">
+        <div class="col">
+          <div class="eyebrow"><span class="num">07</span> The build order</div>
+          <h2 class="h">Do it in this order</h2>
+          <p class="lede">Each step assumes the ones before it are done. <span class="who"><span>You</span></span> marks something the executive does; <span class="who"><span>Admin</span></span> marks something that needs an IT admin with tenant access.</p>
+        </div>
+
+        <div class="progress-box" id="progress">
+          <div class="p-head">
+            <b>Your progress</b>
+            <span class="p-count" id="progressCount">0 / 9 done</span>
+          </div>
+          <div class="p-bar"><div class="p-bar-fill" id="progressBarFill"></div></div>
+          <ul class="checklist" id="progressChecklist"><!-- filled by JS --></ul>
+          <div class="p-resume" id="resumeLine" hidden>You were last on: <a href="#" id="resumeLink"></a></div>
+          <button type="button" class="p-clear" id="clearProgress">Clear my saved progress</button>
+          <p class="p-privacy">Saved privately in your browser only — nothing is sent to us, and it won't follow you to a different device or browser.</p>
+        </div>
+
+        <ol class="steps">
+          <li id="step-1">
+            <h4>Create the break-glass account(s) <span class="who"><span>Admin</span></span></h4>
+            <p>Every business tenant needs one account that exists purely to get you back in if everything else locks you out — never assigned to a person, never used day-to-day, excluded from every Conditional Access policy.</p>
+            <p><b>Naming convention:</b> <span class="mono-block">bg-emergency-1@&lt;tenant&gt;.onmicrosoft.com</span> — use the tenant's built-in <code>.onmicrosoft.com</code> domain, not your custom domain. If your custom domain's federation or DNS ever breaks, the onmicrosoft.com address still works; that's the one scenario this account exists for.</p>
+            <ul class="plain">
+              <li>32+ character random password, stored split across two places only a company officer can reach (not in a password manager tied to your daily-use <b>MFA</b> — multi-factor authentication, the extra code or app-tap you provide beyond your password).</li>
+              <li>Excluded from every Conditional Access policy, including MFA — that's the point of the account.</li>
+              <li>Set an alert rule: any sign-in, password change, or role change on this account should page someone immediately. It should never fire.</li>
+            </ul>
+            <div class="tags"><span class="tag impact-security">Security: critical</span><span class="tag impact-effort">Effort: 15 min per tenant</span></div>
+          </li>
+          <li id="step-2">
+            <h4>Create your named admin account <span class="who"><span>Admin</span></span></h4>
+            <p>A second account, tied to you specifically, used <i>only</i> for tenant-admin tasks — never for reading mail, never for Teams chat.</p>
+            <p><b>Naming convention:</b> <span class="mono-block">adm-jamie@northlinemetal.com</span> (prefix + first name). Give it <b>Global Admin</b> (the highest level of administrative access in a Microsoft 365 tenant) or a scoped admin role, and nothing else lives in its mailbox.</p>
+            <p><b>When to use it:</b> only when you're in the <a href="https://entra.microsoft.com" target="_blank" rel="noopener">Microsoft Entra admin center</a> or <a href="https://admin.microsoft.com" target="_blank" rel="noopener">Microsoft 365 admin center</a> making a change. Sign out of it the rest of the day. If you find yourself signed into <code>adm-</code> to read email, that's the tell that daily-driver and admin have blurred together again.</p>
+            <div class="tags"><span class="tag impact-security">Security: high</span><span class="tag impact-effort">Effort: 10 min</span></div>
+          </li>
+          <li id="step-3">
+            <h4>Set up your daily-driver account <span class="who"><span>You</span></span><span class="who"><span>Admin</span></span></h4>
+            <p><b>Naming convention:</b> <span class="mono-block">jamie@northlinemetal.com</span> — the address people actually email. This is the one your business colleagues know, and the one added to your devices as an ordinary user account, no admin rights attached.</p>
+            <p style="font-size:14px; color:var(--ink-soft);">On the phone specifically: install the <b>Microsoft Outlook app</b> (iPhone and Android both) and add every business tenant plus your personal hub to it, rather than spreading them across native Mail, native Calendar, and a separate Gmail app. Chapter 5 covers Outlook's own default-account settings once everything's added.</p>
+            <div class="tags"><span class="tag impact-user">User-facing</span><span class="tag impact-effort">Effort: 10 min</span></div>
+          </li>
+          <li id="step-4">
+            <h4>Forward legacy personal mail, and tag it as it lands <span class="who"><span>You</span></span></h4>
+            <p>In Yahoo/AOL (and an old Gmail, if you're retiring one) settings, turn on mail forwarding to your personal hub, and leave a copy on the old account for a few weeks rather than deleting on send — just in case. Full step-by-step for each provider is in Chapters 4 and 11.</p>
+            <p>In your hub, create a rule/filter per legacy source that catches mail still addressed to an old address and files it into its own category or folder — e.g. <span class="mono-block">Legacy · Yahoo</span>, <span class="mono-block">Legacy · Old Gmail</span> — because the original "To" address is preserved even after a forward. That label is how you'll spot, a year from now, exactly who still has an old address on file.</p>
+            <p style="font-size:14px; color:var(--ink-soft);"><b>Migrate or leave it — a rule of thumb:</b> don't bother chasing down every sender. <b>Leave low-stakes senders on the old forwarding address forever</b> — newsletters, random retail accounts, anything spammy or low-consequence. <b>Actively go update the sender-of-record for anything that matters</b> — utility bills, rent or mortgage, insurance, banking, anything where a missed or delayed message causes real problems. Those should point at your new address directly, not stay dependent on a forwarding rule that could silently break.</p>
+            <div class="tags"><span class="tag impact-user">User-facing</span><span class="tag impact-effort">Effort: 20 min</span></div>
+          </li>
+          <li id="step-5">
+            <h4>Use plus-addressing and aliases so mail sorts itself <span class="who"><span>You</span></span></h4>
+            <p>Both Gmail and Microsoft personal accounts treat <span class="mono-block">jamie.castell+bank@gmail.com</span> (or <span class="mono-block">jamie.castell+bank@outlook.com</span>) as the same inbox as the plain address — mail still arrives, but you can filter on the <code>+bank</code> tag to auto-label or auto-file it. Hand out a tagged variant any time you're giving your address to a new company, a newsletter, or a one-off signup, and you'll always know exactly who leaked it if it starts getting spam.</p>
+            <p style="font-size:14px; color:var(--ink-soft);"><b>A worked example:</b> give your electric utility <span class="mono-block">jamie.castell+billing@outlook.com</span> instead of your plain address. Build one rule: if sender is the utility <i>and</i> subject matches "your bill is ready" or "payment successful," route it straight to a <span class="mono-block">Bills — OK</span> folder and mark it read. Anything from that same sender that <i>doesn't</i> match — a failed payment, an account issue, an error notice — falls through to your real inbox instead of getting buried with the routine stuff.</p>
+            <p>On the Microsoft business side, your admin can add true <b>aliases</b> (proxy addresses) to your business mailbox — e.g. <span class="mono-block">jamie.castell@northlinemetal.com</span> as an alias of <span class="mono-block">jamie@northlinemetal.com</span> — so old business cards and typo'd addresses still land in one place.</p>
+            <div class="tags"><span class="tag impact-user">User-facing</span><span class="tag impact-effort">Effort: 5 min, ongoing habit</span></div>
+          </li>
+          <li id="step-6">
+            <h4>Build mail rules in the browser, not the desktop app <span class="who"><span>You</span></span><span class="who"><span>Admin</span></span></h4>
+            <p>Create Outlook rules at <span class="mono-block">outlook.office.com</span> (<b>OWA</b> — Outlook on the web), not inside the Outlook desktop app. Rules made in OWA run on Microsoft's servers and keep working even when your laptop is closed; several common rule types made in the desktop client are flagged "client-only" and silently stop working the moment Outlook isn't open. Same logic applies as a tenant admin setting mail-flow rules — do it from the admin center, not a local client.</p>
+            <div class="callout attn" style="margin-top:14px;">
+              <span class="lbl">Pay attention</span>
+              This is the single most common reason a "working" mail rule mysteriously stops sorting mail three weeks later. If a rule needs to survive your laptop being off, it has to be built where Microsoft — not your PC — runs it.
+              <div class="tags"><span class="tag impact-security">Reliability</span><span class="tag impact-effort">Effort: same as any rule — just build it in the right place</span></div>
+            </div>
+          </li>
+          <li id="step-7">
+            <h4>Confirm business tenants don't forward, and don't accept forwards <span class="who"><span>Admin</span></span></h4>
+            <p>Two checks per tenant, both in the <a href="https://admin.exchange.microsoft.com" target="_blank" rel="noopener">Exchange admin center</a>:</p>
+            <ul class="plain">
+              <li>No mailbox in this tenant has auto-forwarding set to an external address (check <i>Mail flow rules</i> and each mailbox's own forwarding setting).</li>
+              <li>No mail-flow rule accepts and silently redistributes mail forwarded in from an external personal account.</li>
+            </ul>
+            <p>If Northline Metal Works and Vantage Public Affairs are two different companies you're both involved in, this is what keeps them from quietly becoming one company's data sitting inside the other's mailbox.</p>
+            <div class="tags"><span class="tag impact-security">Security: critical</span><span class="tag impact-effort">Effort: 10 min per tenant</span></div>
+          </li>
+          <li id="step-8">
+            <h4>Decommission the setup account <span class="who"><span>Admin</span></span></h4>
+            <p>Whatever account did the actual buildout — a temporary admin login, a vendor's service account, your own <code>adm-</code> account if it was over-scoped for the day — get its permissions back down to normal, or disable it outright if it was only ever meant to exist for this project.</p>
+            <div class="tags"><span class="tag impact-security">Security: high</span><span class="tag impact-effort">Effort: 5 min</span></div>
+          </li>
+          <li id="step-9">
+            <h4>Verify, end to end <span class="who"><span>You</span></span></h4>
+            <p>Send a test email through every path: old Yahoo address → confirm it lands labeled in your hub; each business address → confirm it lands in its own account, not the hub. Sign in on both devices and count your MFA prompts for one normal day — if it's more than one or two, something upstream is misconfigured, not "just how it is."</p>
+            <div class="tags"><span class="tag impact-user">User-facing</span><span class="tag impact-effort">Effort: 15 min</span></div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="chapter" id="new-tenant">
+        <div class="col">
+          <div class="eyebrow"><span class="num">08</span> Secure your new tenant</div>
+          <h2 class="h">If you're standing up a brand-new Microsoft 365 tenant</h2>
+          <p class="lede">Sometimes the second (or third) company in this guide doesn't exist yet as a tenant — you're creating it. Do these before anything else touches it, in this order.</p>
+        </div>
+        <ol class="steps">
+          <li>
+            <h4>Name it like it's permanent <span class="who"><span>Admin</span></span></h4>
+            <p>The tenant name and default <code>.onmicrosoft.com</code> domain are annoying to change later. Use the real company name, not a placeholder or a project codename — the break-glass account in the next step is going to live on this domain forever.</p>
+          </li>
+          <li>
+            <h4>Set up the break-glass account first <span class="who"><span>Admin</span></span></h4>
+            <p>Before you touch licensing, before you add a single user — create the break-glass account exactly as described in Chapter 7, step 1. Everything else in this list depends on having a way back in if you lock yourself out while setting the rest of it up.</p>
+          </li>
+          <li>
+            <h4>Global Admin password + MFA, immediately <span class="who"><span>Admin</span></span></h4>
+            <p>Strong, unique, generated password on the Global Admin account, MFA registered before you do anything else with it — sign in and register at <a href="https://mysignins.microsoft.com/security-info" target="_blank" rel="noopener">mysignins.microsoft.com/security-info</a> → <b>Add sign-in method</b>. Enable <b>Self-service password reset (SSPR)</b> for the tenant while you're in there — it's one setting and it prevents a large share of future lockout tickets.</p>
+          </li>
+          <li>
+            <h4>Turn on a baseline day one <span class="who"><span>Admin</span></span></h4>
+            <p>New tenants get <b>Security Defaults</b> enabled automatically in most cases — leave it on until you're ready to replace it with real Conditional Access policies (see the admin bonus chapter). Don't end up in the gap where Security Defaults gets turned off "to test something" and nothing takes its place.</p>
+          </li>
+          <li>
+            <h4>Review default sharing settings <span class="who"><span>Admin</span></span></h4>
+            <p>SharePoint/OneDrive external sharing and Teams external access both ship with defaults that are looser than most companies want. Check both before real data lands in the tenant, not after.</p>
+          </li>
+        </ol>
+        <p style="font-size:14px; color:var(--muted);">Reference: <a href="https://entra.microsoft.com" target="_blank" rel="noopener">Microsoft Entra admin center</a> · <a href="https://learn.microsoft.com/entra/fundamentals/whatis" target="_blank" rel="noopener">What is Microsoft Entra ID? →</a></p>
+      </section>
+
+      <section class="chapter" id="meetings">
+        <div class="col">
+          <div class="eyebrow"><span class="num">09</span> Zoom, Teams &amp; meetings</div>
+          <h2 class="h">Pick your meeting tool per audience, not by habit</h2>
+          <p class="lede">Teams works fine inside one tenant. Across two companies, it stops being simple fast — and there's a cleaner option available.</p>
+          <p><b>Teams across multiple tenants:</b> the Teams client supports guest access and lets you switch between organizations you belong to, but the reality on a shared device is an <b>org switcher</b> — a little tenant picker you'll click every time a notification from the "wrong" company shows up while you're in the other one's Teams. Chats, channels, and presence don't blend across tenants; you're really running two separate Teams experiences that happen to share an icon. On a device already juggling two companies, that's real notification overload, not a minor annoyance.</p>
+          <p><b>Zoom as the neutral option:</b> for any meeting that includes people from <i>both</i> companies, or an external party who isn't in either tenant, Zoom (or simply the calendar on your personal hub) sidesteps the tenant-switching problem entirely — nobody has to pick an org, nobody needs a guest invite accepted in advance. Recommend Zoom as the default for cross-company and external meetings, and reserve native Teams calls for meetings that stay inside a single tenant.</p>
+          <div class="tags"><span class="tag impact-user">User impact: fewer notifications</span><span class="tag impact-effort">Effort: a habit, not a setup task</span></div>
+        </div>
+      </section>
+
+      <section class="chapter" id="sharing" data-gate="tenants:multi">
+        <div class="col">
+          <div class="eyebrow"><span class="num">10</span> When your companies work together</div>
+          <h2 class="h">If the two companies need to share files or channels</h2>
+          <p class="lede">Most people using this guide keep their two tenants firmly separate. But if Northline Metal Works and Vantage Public Affairs genuinely work together enough to want shared files or a shared Teams channel, here's what that setup actually involves — grounded in how Microsoft's cross-tenant collaboration really works, not marketing language.</p>
+        </div>
+        <div class="table-wrap wide">
+          <table>
+            <tr><th style="width:22%;">Mechanism</th><th>What it is</th><th>Requires</th></tr>
+            <tr>
+              <td><b>B2B collaboration</b></td>
+              <td>Invite-based guest accounts. Simplest option, works with almost any identity provider on the other side, no special licensing relationship between the tenants.</td>
+              <td>Just an invite, accepted once per guest.</td>
+            </tr>
+            <tr>
+              <td><b>B2B direct connect</b></td>
+              <td>Mutual trust configured between two Entra organizations directly — no guest account created at all. This is what powers <b>Teams Connect shared channels</b>, where a channel appears natively inside both companies' Teams.</td>
+              <td><b>Entra ID P1</b> in both tenants, plus cross-tenant access settings configured on both sides.</td>
+            </tr>
+            <tr>
+              <td><b>Teams shared channels</b></td>
+              <td>Shared channels themselves are on by default in Teams — but external (cross-tenant) collaboration on a shared channel is <b>off by default</b>, even though the feature exists.</td>
+              <td>A Teams admin center policy change, plus Entra cross-tenant access settings on <i>both</i> organizations. Changes can take up to 6 hours to propagate before they take effect.</td>
+            </tr>
+          </table>
+        </div>
+        <p>In practice: if you just need to send someone at the other company a file occasionally, a normal B2B guest invite is enough — nobody needs to touch tenant-wide settings. If you want an actual shared channel that feels native on both sides, budget for a real conversation between both companies' admins, Entra ID P1 in both tenants, and a same-day-but-not-instant rollout once the settings are changed.</p>
+        <p style="font-size:14px; color:var(--muted);">Admin references: <a href="https://entra.microsoft.com" target="_blank" rel="noopener">Entra admin center</a> (cross-tenant access settings) · <a href="https://admin.teams.microsoft.com" target="_blank" rel="noopener">Teams admin center</a> (external access &amp; shared channel policies).</p>
+      </section>
+
+      <section class="chapter" id="forwarding">
+        <div class="col">
+          <div class="eyebrow"><span class="num">11</span> Retiring your old inbox</div>
+          <h2 class="h">Actually forwarding Yahoo and AOL, step by step</h2>
+          <p class="lede">Chapter 7 told you to forward your legacy mail. Here's exactly where to click, provider by provider — the mockups below are illustrative; exact layout may vary as providers update their settings pages.</p>
+        </div>
+
+        <div class="hl-toggle" role="group" aria-label="Detail level">
+          <button type="button" class="hl-btn" data-level="hl">High-level</button>
+          <button type="button" class="hl-btn on" data-level="detail">Detailed steps</button>
+        </div>
+        <div class="callout" style="margin-top:0;">
+          <span class="lbl">Before you follow these literally</span>
+          Providers change their settings screens over time. If a detailed step below doesn't match what's on your screen, the high-level version above it should still point you to the right settings page. Using a provider that isn't Yahoo or AOL? Skip straight to <a href="#forwarding-elsewhere">"Forwarding from anywhere else"</a> below — it works for almost any provider.
+        </div>
+
+        <div data-gate="legacy:yahoo">
+        <h3 style="margin-top:8px;">Yahoo Mail</h3>
+        <div class="hl-steps">
+          <ul><li>Settings gear → More settings → Mailboxes → pick the mailbox → Forwarding → enter address → verify the confirmation code → save.</li></ul>
+        </div>
+        <figure class="mockup wide" style="margin-left:0; margin-right:0;">
+          <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="addr">mail.yahoo.com/d/settings/mailboxes</span></div>
+          <div class="panel">
+            <div class="prow"><span class="k">Forwarding</span><span class="pill on">ON</span></div>
+            <div class="prow"><span class="k">Forward to</span><span class="v">jamie.castell@yourdomain.com</span></div>
+            <div class="prow"><span class="k">Keep a copy of forwarded messages</span><span class="pill off">OFF</span></div>
+          </div>
+          <figcaption>What you'll roughly see under Mailboxes → Forwarding — exact layout may vary.</figcaption>
+        </figure>
+        <ol class="plain detail-steps" style="list-style:decimal;">
+          <li>Sign in at <a href="https://mail.yahoo.com" target="_blank" rel="noopener">mail.yahoo.com</a> and click the <b>Settings</b> (gear) icon, then <b>More settings</b>.</li>
+          <li>Open <b>Mailboxes</b> and click the mailbox you want to forward.</li>
+          <li>Find the <b>Forwarding</b> section and toggle it on.</li>
+          <li>Enter your forwarding address — your new hub, e.g. <span class="mono-block">jamie.castell@yourdomain.com</span> (or your Gmail, if that's your simpler-fallback hub).</li>
+          <li>Yahoo emails a confirmation code to that forwarding address. Open that email, copy the code.</li>
+          <li>Paste the confirmation code back into Yahoo to verify the forward.</li>
+          <li>Choose whether to <b>keep a copy of forwarded messages in the Yahoo mailbox</b> or not — keeping a copy for the first few weeks is a reasonable safety net.</li>
+        </ol>
+        <p style="font-size:13px; color:var(--muted);">Yahoo help: <a href="https://help.yahoo.com/kb/SLN3618.html" target="_blank" rel="noopener">help.yahoo.com/kb/SLN3618.html →</a></p>
+        </div>
+
+        <div data-gate="legacy:aol">
+        <h3 style="margin-top:34px;">AOL Mail</h3>
+        <div class="hl-steps">
+          <ul><li>Settings gear → More Settings → Forwarding → toggle on → enter address → click the verification link AOL emails you → choose keep-copy or not.</li></ul>
+        </div>
+        <figure class="mockup wide" style="margin-left:0; margin-right:0;">
+          <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="addr">mail.aol.com/settings/forwarding</span></div>
+          <div class="panel">
+            <div class="prow"><span class="k">Forwarding</span><span class="pill on">ON</span></div>
+            <div class="prow"><span class="k">Forward to</span><span class="v">jamie.castell@yourdomain.com</span></div>
+            <div class="prow"><span class="k">Keep a copy in AOL Mail</span><span class="pill off">OFF</span></div>
+          </div>
+          <figcaption>What you'll roughly see under Settings → Forwarding — exact layout may vary.</figcaption>
+        </figure>
+        <ol class="plain detail-steps" style="list-style:decimal;">
+          <li>Sign in at <a href="https://mail.aol.com" target="_blank" rel="noopener">mail.aol.com</a> and click the <b>Settings</b> (gear) icon, then <b>More Settings</b>.</li>
+          <li>Choose <b>Forwarding</b> from the settings list.</li>
+          <li>Toggle forwarding on and enter your forwarding address.</li>
+          <li>AOL sends a confirmation email to the new address — open it and click the verification link.</li>
+          <li>Choose whether to keep a copy of forwarded mail in AOL Mail, or not.</li>
+        </ol>
+        <p style="font-size:13px; color:var(--muted);">AOL help: <a href="https://help.aol.com/articles/aol-mail-set-up-mail-forwarding" target="_blank" rel="noopener">help.aol.com/articles/aol-mail-set-up-mail-forwarding →</a></p>
+        </div>
+
+        <div data-gate="legacy:other">
+        <h3 id="forwarding-elsewhere" style="margin-top:34px;">Forwarding from anywhere else</h3>
+        <p>Every provider we haven't named follows roughly the same pattern, and it's easy to find your way there:</p>
+        <ul class="plain">
+          <li>Look for a <b>gear icon</b> or "Settings" — usually top-right of the inbox.</li>
+          <li>If the settings page has a search box, just type <b>"Forwarding"</b> into it.</li>
+          <li>Most providers require you to <b>verify the destination address</b> — a confirmation code or a click-through link — before the forward actually activates. Don't skip this step; forwarding silently won't work until it's done.</li>
+          <li>Most also let you choose whether to <b>keep a copy in the original inbox</b>. Keeping a copy for a transition period is usually the safer default.</li>
+        </ul>
+        <p style="font-size:13px; color:var(--muted);">Outlook.com and Gmail forwarding walkthroughs are in Chapter 4. Gmail's own filter settings (for the receiving-side rules described in Chapter 7): <a href="https://mail.google.com" target="_blank" rel="noopener">mail.google.com</a> → Settings → See all settings → Filters and Blocked Addresses.</p>
+        </div>
+
+        <details class="sidequest">
+          <summary>Optional side quest: a full contacts reset and consolidation <span class="sq-tag">Optional</span></summary>
+          <div class="sq-body">
+            <p>Not required for the base build — but once mail from everywhere is flowing into one hub, you'll usually find you've accumulated duplicate and scattered contacts across every account you're consolidating: personal Gmail, each business tenant, old Yahoo/AOL if you ever kept contacts there, plus whatever's stuck locally on the phone itself. The clean fix isn't a merge tool — it's a full export, dedupe, and reset onto exactly one authoritative store. Budget an hour; do it once and you won't need to again.</p>
+
+            <ol class="steps" style="margin-top:14px;">
+              <li>
+                <b>Export every source to CSV first.</b> Do this from each account that currently holds contacts: personal Gmail, each business tenant, Yahoo/AOL if applicable, and the phone's local contacts. Nothing gets deleted yet — this step is purely capture.
+                <ul class="plain" style="margin-top:10px;">
+                  <li><b>Google Contacts:</b> <a href="https://contacts.google.com" target="_blank" rel="noopener">contacts.google.com</a> → select all (or the contacts you want) → <span class="mono-block">Export</span> in the left menu → choose <b>Google CSV</b> (moving between Google accounts) or <b>Outlook CSV</b> (for Excel or another app) → Export. Downloads immediately.</li>
+                  <li><b>Outlook on the web / new Outlook for Windows:</b> People → <span class="mono-block">Export contacts</span> in the ribbon → under "Contacts from this folder" pick the folder → Export. Saves to Downloads; UTF-8 encoding is recommended.</li>
+                  <li><b>Classic Outlook desktop</b> (and how to get a native PST backup at the same time): File → Open &amp; Export → Import/Export → <b>Export to a file</b> → Next → <b>Comma Separated Values</b> → Next → select the Contacts folder → Next → Browse, name the file, OK → Next → Finish. If you already keep a PST backup from Outlook desktop, its Contacts folder can be exported straight to CSV this same way — no separate conversion tool needed.</li>
+                </ul>
+              </li>
+              <li>
+                <b>Combine all the CSVs into one file.</b> Open them all in a spreadsheet (Excel or Google Sheets), stack every source's rows into one sheet, and keep only a consistent set of columns — name, email(s), phone(s), company. A ragged mix of columns is what makes the next step painful, so straighten this out first.
+              </li>
+              <li>
+                <b>Merge the duplicates.</b> Three ways to get through this fast rather than by hand:
+                <ul class="plain" style="margin-top:10px;">
+                  <li>Sort the combined sheet by email address or by full name first — duplicates land next to each other and are easy to spot and delete manually.</li>
+                  <li>Or skip manual spreadsheet dedup entirely: import the combined CSV into Google Contacts and run <b>Merge &amp; fix</b> (menu icon, top-left → Merge &amp; fix → review suggestions → Merge or Merge all), or import into Outlook and use its automatic duplicate suggestions after import.</li>
+                  <li>Simple rule of thumb either way: <b>same email address = same person</b>, even when the name is formatted differently ("J. Smith" vs. "Jane Smith, Northline Metal Works").</li>
+                </ul>
+              </li>
+              <li>
+                <b>Back up natively before deleting anything.</b> Take one native-format backup in addition to the CSV — a PST export from Outlook desktop is the standard "native backup" most business people will recognize (same Import/Export wizard as step 1, choosing <b>Outlook Data File (.pst)</b> instead of CSV, for the whole mailbox or just Contacts). This is the safety net: an imperfect cleanup below is fine, because a real backup exists to fall back on.
+              </li>
+              <li>
+                <b>Remove all contacts from every device and cloud account.</b> This is the actual reset — delete the contacts stored locally on the phone, and delete them from every cloud contacts store they came from (personal Gmail, each business tenant, etc.), so nothing stale re-syncs back in later.
+                <ul class="plain" style="margin-top:10px;">
+                  <li><b>Google Contacts:</b> check the box next to any contact → the dropdown arrow at top-left → <b>All</b> (selects everything) → <b>More</b> (top right) → <b>Delete</b> → <b>Move to trash</b>. Deleted contacts sit in Trash for 30 days before permanent deletion — a second safety net on top of the PST/CSV backup.</li>
+                  <li><b>Outlook.com (web):</b> People → <b>All contacts</b> in the left pane → select contacts (Shift+click for ranges) → Delete → confirm. The web version caps bulk delete at 50 contacts at a time, so a large list takes a few passes — don't be surprised when it doesn't clear everything in one go. Classic desktop Outlook can Ctrl+A the whole list and delete it in a single action, which is faster if you have it installed.</li>
+                  <li><b>Phone-local contacts (iPhone/Android):</b> delete the on-device contact group from your phone's Contacts app settings — exact wording and location vary by phone and OS version, so check your specific device's current menu rather than following a fixed path here.</li>
+                </ul>
+              </li>
+              <li>
+                <b>Upload the cleaned, merged list into the one contacts store that becomes authoritative going forward</b> — whichever you chose as your personal daily-driver hub in Chapter 4. Outlook (personal Microsoft account) if that's your hub: People → <span class="mono-block">Import contacts</span> in the ribbon → Browse → select the CSV → Open → Import. Google Contacts if Google is your hub: <span class="mono-block">Import</span> in the left menu → choose the CSV → confirm. Google maps the header row to its fields automatically and drops the import into a labeled group so you can review it before it joins your main list.
+              </li>
+              <li>
+                <b>From here forward, work from the cloud/web version of mail and contacts, not a local device cache.</b> The whole point of the reset is that the phone just displays what's synced from the cloud account — it isn't a separate store that can quietly drift out of sync again.
+              </li>
+            </ol>
+
+            <div class="callout" style="margin-top:18px;">
+              <span class="lbl">The end state, plainly</span>
+              After all of this, contacts should be syncing onto the device from exactly two places — the personal hub account and the business tenant(s) — nothing else. Concretely: either <b>personal Microsoft account + work Microsoft account(s)</b> if you moved your personal hub to Microsoft, or <b>personal Google account + work Microsoft account(s)</b> if you kept Gmail as your personal hub. No leftover Yahoo, AOL, or other legacy source should be syncing contacts to the device anymore — those accounts are just forwarding mail in now, per Chapter 7, and contribute nothing to the address book.
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="chapter" id="yubikey" data-gate="yubikey:on">
+        <div class="col">
+          <div class="eyebrow"><span class="num">12</span> A physical key</div>
+          <h2 class="h">Worth the $25–60</h2>
+          <p class="lede">A hardware security key (YubiKey or equivalent) is the single cheapest security upgrade in this entire guide, and it removes MFA prompts more than it adds them — a tap replaces typing a code.</p>
+        </div>
+        <div class="table-wrap wide">
+          <table>
+            <tr><th>Model</th><th>Connector</th><th>Typical price</th><th>Good for</th></tr>
+            <tr><td>YubiKey 5C NFC</td><td>USB-C + NFC (tap on phone)</td><td>~$55 flat</td><td>Modern laptop + phone, one key for both</td></tr>
+            <tr><td>YubiKey 5 NFC</td><td>USB-A + NFC</td><td>~$50 flat</td><td>Older laptop with USB-A ports</td></tr>
+            <tr><td>Security Key NFC (Yubico)</td><td>USB-A/C + NFC</td><td>~$25–29 flat</td><td>Budget option, FIDO2/passkeys only — fine for most executives</td></tr>
+          </table>
+        </div>
+        <div class="callout attn">
+          <span class="lbl">Pay attention</span>
+          The key itself is cheap and simple. Registering it against your account is <i>not</i> self-service in most tenants — your admin needs to enable <b>FIDO2</b> security key (the passkey/security-key authentication standard) as an allowed authentication method in Entra ID before you can add one. Buy the key, then send your admin the setup guide below before you try to register it.
+          <div class="tags"><span class="tag impact-security">Security: very high</span><span class="tag impact-effort">Effort: 15 min for admin, 2 min for you</span></div>
+        </div>
+        <p><a href="https://learn.microsoft.com/entra/identity/authentication/howto-authentication-passwordless-security-key" target="_blank" rel="noopener">Admin setup guide: Enable passwordless security key sign-in in Microsoft Entra ID →</a></p>
+        <p style="font-size:14px; color:var(--ink-soft);">Once your admin confirms it's enabled, your own part is quick: sign in at <a href="https://mysignins.microsoft.com/security-info" target="_blank" rel="noopener">mysignins.microsoft.com/security-info</a> → <b>Add sign-in method</b> → <b>Security key</b> → follow the on-screen prompt to tap or insert your key. That's the "2 min for you" step above.</p>
+      </section>
+
+      <section class="chapter" id="admin-bonus">
+        <div class="bonus-banner">★ Bonus chapter — hand this part to your IT admin</div>
+        <div class="col">
+          <h2 class="h">Conditional Access, for the person supporting this arrangement</h2>
+          <p class="lede">Everything above makes the executive's life easier. This part is what keeps <i>you</i> — the admin — from being the one who explains a breach to the board. Microsoft already turns on a baseline for you; this is what to layer on top, and the one real decision that changes everything downstream.</p>
+        </div>
+
+        <div class="callout admin">
+          <span class="lbl">The floor, whether you touch it or not</span>
+          Microsoft automatically rolls out a set of <b>Microsoft-managed Conditional Access policies</b> to eligible tenants — blocking legacy authentication, requiring MFA for admins and for all users, and requiring MFA for Azure/Entra portal access. They start in report-only and turn on within 30 days unless you act. If you're on E3/E5 or have Microsoft 365 Business Premium, check <b>Entra admin center → <a href="https://entra.microsoft.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade" target="_blank" rel="noopener">Conditional Access → Policies</a></b> for anything showing <span class="mono">Created by: Microsoft</span> — that's your existing floor, not a blank slate. Exclude your break-glass account from these exactly as you would from any policy you wrote yourself.
+        </div>
+
+        <h3 style="margin-top:34px;">The one decision that matters</h3>
+        <p>Before setting a single toggle, answer this for the tenant you administer: <b>if this executive's personal device is compromised, are you willing to accept that your company's mail could be exposed to whatever else lives on it?</b> Your answer picks a column below.</p>
+
+        <div class="table-wrap wide">
+          <table>
+            <tr><th style="width:26%;">Policy area</th><th>If you're OK with cross-company exposure on this device</th><th>If you want hard isolation</th><th>Watch for</th></tr>
+            <tr>
+              <td><b>Device compliance / join requirement</b></td>
+              <td>Don't require a compliant or hybrid-joined device for this user — allow any device, gated by MFA instead.</td>
+              <td>Require the device to be Intune-compliant or Entra-joined <i>to this tenant</i> — which conflicts directly with a shared, multi-tenant device. Pick this and the executive will get device-join prompts you didn't intend.</td>
+              <td class="mono" style="font-size:12px;">Grant control: "Require device to be marked as compliant"</td>
+            </tr>
+            <tr>
+              <td><b>Sign-in frequency</b></td>
+              <td>Standard (Microsoft default, roughly balances security and re-prompting).</td>
+              <td>Shorter re-authentication window (e.g. every 4–8 hours) so a stolen session token expires fast.</td>
+              <td class="mono" style="font-size:12px;">Session &gt; Sign-in frequency</td>
+            </tr>
+            <tr>
+              <td><b>Persistent browser session</b></td>
+              <td>Allow — fewer prompts on a device only this person uses.</td>
+              <td>Never persist — force a fresh sign-in every browser session.</td>
+              <td class="mono" style="font-size:12px;">Session &gt; Persistent browser session</td>
+            </tr>
+            <tr>
+              <td><b>App-enforced restrictions (unmanaged device)</b></td>
+              <td>Allow full Outlook/OWA functionality.</td>
+              <td>Block download, print, and sync to an unmanaged device — mail is view-only in the browser.</td>
+              <td class="mono" style="font-size:12px;">Session &gt; Use app enforced restrictions</td>
+            </tr>
+            <tr>
+              <td><b>MFA strength</b></td>
+              <td>Any MFA method (Authenticator app push is fine).</td>
+              <td>Require phishing-resistant MFA specifically (FIDO2 key or certificate-based) — see Chapter 12's YubiKey section.</td>
+              <td class="mono" style="font-size:12px;">Grant control: "Require authentication strength"</td>
+            </tr>
+            <tr>
+              <td><b>Legacy authentication</b></td>
+              <td>Block regardless — there's no version of this arrangement where legacy auth (IMAP/POP/SMTP-basic) should be allowed. Over 99% of password-spray attacks use it.</td>
+              <td>Block regardless.</td>
+              <td class="mono" style="font-size:12px;">Usually already covered by Microsoft's managed baseline policy</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="callout attn" style="margin-top:8px;">
+          <span class="lbl">Pay attention</span>
+          The "hard isolation" column is real security, but it's also the column that generates support tickets — a device-compliance requirement in particular will actively fight a device that's deliberately shared across tenants. Most MSPs land on the left column for exactly this scenario and lean on MFA strength + short sign-in frequency to do the real work instead.
+          <div class="tags"><span class="tag impact-user">User impact: high if you pick isolation</span><span class="tag impact-security">Security: your call</span><span class="tag impact-effort">Effort: one policy review per tenant</span></div>
+        </div>
+
+        <h3 style="margin-top:34px;">Naming and structure we'd suggest for your own sanity</h3>
+        <ul class="plain">
+          <li>One Conditional Access policy per control, not one giant policy — <span class="mono-block">CA01-Block-LegacyAuth</span>, <span class="mono-block">CA02-MFA-AllUsers</span>, <span class="mono-block">CA03-MFA-Admins-PhishResistant</span>. Easier to report-only test and roll back individually.</li>
+          <li>Always exclude your two break-glass accounts from every custom policy — the same way you'd exclude them from a Microsoft-managed one.</li>
+          <li>Run every new policy in <b>Report-only</b> for at least a week before enforcing it. This is the cheapest insurance in the whole playbook.</li>
+        </ul>
+
+        <div data-gate="tenants:multi">
+        <h3 style="margin-top:34px;">Adding a second admin</h3>
+        <p>For business continuity, any brand-new Microsoft 365 tenant should have a second Global Admin outside the primary user — someone who can get in if the first admin is unreachable. Rather than assigning the Global Admin role directly to an individual account, we'd recommend creating a <b>role-assignable security group</b> (e.g. <span class="mono-block">Tenant Admins</span>) instead, then assigning the Global Admin role to the group and adding actual admin accounts as members. It's easier to audit and easier to revoke than a role sitting on one person's account, and it means removing an admin is a group-membership change, not a role reassignment under pressure.</p>
+        <ul class="plain">
+          <li>Requires Entra ID P1 or P2.</li>
+          <li>Created in <a href="https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade" target="_blank" rel="noopener">Entra admin center → Groups → New Group</a>, with <span class="mono">Microsoft Entra roles can be assigned to the group</span> set to <b>Yes</b> — this option can only be set at group creation, not added later.</li>
+          <li>Assign the Global Admin role to the group itself, then manage membership instead of managing role assignments.</li>
+        </ul>
+        <p style="font-size:14px; color:var(--ink-soft);">If you'd rather have someone else formally manage the tenant, Gravity Limited can take that on directly. We're still building out a formal client-management process, so for now that's either a direct email or a quick call — whichever's easier for you.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <span class="email-reveal" data-user="marc+unification" data-domain="usgravity.com"><button type="button" class="reveal-btn">Click to reveal contact email</button></span>
+          <a href="https://calendly.com/redbigfoot/us-gravity-intro" target="_blank" rel="noopener" class="reveal-btn" style="text-decoration:none; display:inline-block;">Or book a quick intro call →</a>
+        </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="faq">
+        <div class="col">
+          <div class="eyebrow"><span class="num">13</span> FAQ</div>
+          <h2 class="h">Quick answers</h2>
+          <p><b>Can I just use my business Microsoft account for everything?</b><br>No — the moment a business tenant becomes your contacts/calendar hub, personal data starts living inside a company's Microsoft 365 tenant, which the company can see, export, and legally hold. Keep the hub personal.</p>
+          <p><b>What if I'm on three or more business tenants, not two?</b><br>Nothing here changes — repeat steps 1–3 of the build order per tenant, and use the calculator in Chapter 3 with your real tenant count.</p>
+          <p><b>Does this work if I own the device myself, versus if a company issued it?</b><br>Yes to both. On a company-issued device, that company's admin may have more say over device-level policy (the admin bonus chapter's "hard isolation" column becomes more likely for that one tenant specifically) — the account-level steps in Chapter 7 don't change either way.</p>
+          <p><b>My old Yahoo/AOL address still gets important mail years later — is that normal?</b><br>Very. That's exactly what the Legacy label in Chapter 7 is for — check it occasionally, and update anyone still using the old address directly rather than relying on the forward forever.</p>
+        </div>
+      </section>
+
+      <section class="footer">
+        <div class="stamp" id="footerStamp">A Gravity Limited project · usgravity.com</div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<div class="drawer-scrim" id="drawerScrim"></div>
+<nav class="drawer" id="drawer">
+  <div class="grabber"></div>
+  <ul class="toc-list" id="drawerList"></ul>
+</nav>
+<nav class="mobile-nav" aria-label="Chapter navigation">
+  <button type="button" id="navPrev" aria-label="Previous chapter"><span class="ic">‹</span><span class="lb">Prev</span></button>
+  <button type="button" class="chbtn" id="navChapters">Chapters<span class="cur" id="navCurrent"></span></button>
+  <button type="button" id="navNext" aria-label="Next chapter"><span class="ic">›</span><span class="lb">Next</span></button>
+</nav>
+
+<script>
+  // ---- brand switch: change this one object to reskin the whole page ----
+  const BRAND = {
+    name: "The Unification Project",
+    mark: "U",
+    sub: "Free field guide",
+    tocFoot: "A free resource. Take it, use it, keep it.",
+    footerStamp: 'A <a href="https://usgravity.com" target="_blank" rel="noopener">Gravity Limited</a> project'
+  };
+  document.getElementById('brandName').textContent = BRAND.name;
+  document.getElementById('brandMark').textContent = BRAND.mark;
+  document.getElementById('brandSub').textContent = BRAND.sub;
+  document.getElementById('tocFoot').textContent = BRAND.tocFoot;
+  document.getElementById('footerStamp').innerHTML = BRAND.footerStamp;
+
+  // ---- tiny localStorage helpers (never throw) ----
+  const LS_PREFIX = 'unificationGuide.';
+  function lsGet(key, fallback){
+    try {
+      const raw = localStorage.getItem(LS_PREFIX + key);
+      return raw === null ? fallback : JSON.parse(raw);
+    } catch (e) { return fallback; }
+  }
+  function lsSet(key, value){
+    try { localStorage.setItem(LS_PREFIX + key, JSON.stringify(value)); } catch (e) { /* private browsing, quota, etc. */ }
+  }
+  function lsRemove(key){
+    try { localStorage.removeItem(LS_PREFIX + key); } catch (e) { /* ignore */ }
+  }
+
+  // ---- calculator ----
+  const defaultState = { tenants: 1, hub: 'gmail', laptops: 1, phones: 1, yahoo: 1, aol: 0, gmailLegacy: 0, other: 0, yubikey: false, diy: true };
+  const state = Object.assign({}, defaultState, lsGet('calc', {}));
+
+  // ---- content filtering: only kicks in once the reader has actually touched the calculator ----
+  let calcTouched = lsGet('calcTouched', false);
+  let showAllSections = lsGet('showAllSections', false);
+
+  function markCalcTouched(){
+    if (!calcTouched) { calcTouched = true; lsSet('calcTouched', true); }
+  }
+  function setShowAllSections(v){
+    showAllSections = v;
+    lsSet('showAllSections', v);
+    applyFiltering();
+  }
+
+  function gateVisible(gate){
+    if (gate === 'hub:m365') return state.hub === 'm365';
+    if (gate === 'tenants:multi') return state.tenants > 1;
+    if (gate === 'yubikey:on') return !!state.yubikey;
+    if (gate.indexOf('legacy:') === 0) return (state[gate.slice(7)] || 0) > 0;
+    return true;
+  }
+
+  function applyFiltering(){
+    const active = calcTouched && !showAllSections;
+    document.querySelectorAll('[data-gate]').forEach(el => {
+      el.hidden = active ? !gateVisible(el.getAttribute('data-gate')) : false;
+    });
+    const bar = document.getElementById('filterBar');
+    if (bar) bar.hidden = !active;
+    const cb = document.getElementById('calcShowAll');
+    if (cb) cb.checked = showAllSections;
+    updateTocHiddenState();
+    updateMobileNavButtons();
+  }
+
+  function updateTocHiddenState(){
+    document.querySelectorAll('.toc-list li a, .drawer .toc-list li a').forEach(a => {
+      const href = a.getAttribute('href') || '';
+      if (href.charAt(0) !== '#') return;
+      const target = document.getElementById(href.slice(1));
+      const li = a.closest('li');
+      if (!li || !target) return;
+      const isHidden = !!target.hidden;
+      li.classList.toggle('toc-hidden', isHidden);
+      let flag = a.querySelector('.hidden-flag');
+      if (isHidden && !flag) {
+        flag = document.createElement('span');
+        flag.className = 'hidden-flag';
+        flag.textContent = 'Not applicable to your answers';
+        a.appendChild(flag);
+      } else if (!isHidden && flag) {
+        flag.remove();
+      }
+    });
+  }
+
+  // placeholder — replaced with the real implementation once mobile nav chapters exist
+  function updateMobileNavButtons(){}
+
+  function saveCalc(){ lsSet('calc', state); }
+
+  function setSegButtons(){
+    document.querySelectorAll('#seg-hub button').forEach(b => {
+      b.classList.toggle('on', b.getAttribute('data-hub') === state.hub);
+    });
+  }
+
+  function render(){
+    ['tenants','laptops','phones','yahoo','aol','gmailLegacy','other'].forEach(key => {
+      const el = document.getElementById('val-' + key);
+      if (el) el.textContent = state[key];
+    });
+    setSegButtons();
+    document.getElementById('tog-yubikey').classList.toggle('on', state.yubikey);
+    document.getElementById('tog-diy').classList.toggle('on', state.diy);
+
+    let base = 2.5; // breakglass + admin + daily-driver conventions across first tenant
+    let extraTenants = Math.max(0, state.tenants - 1) * 1.5;
+    let hubCost = state.hub === 'm365' ? 2.0 : (state.hub === 'workspace' ? 1.5 : 0.5);
+    let forwarding = (state.yahoo + state.aol + state.gmailLegacy) * 0.4 + state.other * 0.25;
+    let devices = (state.laptops + state.phones) * 1.0;
+    let yubikey = state.yubikey ? (state.laptops + state.phones) * 0.5 : 0;
+
+    let adminHours = base + extraTenants + hubCost + forwarding + devices + yubikey;
+    let diyHours = adminHours * 2.1;
+
+    document.getElementById('split-admin').textContent = adminHours.toFixed(1) + 'h';
+    document.getElementById('split-diy').textContent = diyHours.toFixed(1) + 'h';
+
+    let shown = state.diy ? diyHours : adminHours;
+    document.getElementById('calc-headline').innerHTML = shown.toFixed(1) + '<span> hrs</span>';
+    document.getElementById('calc-context').textContent = state.diy
+      ? 'Spread over a weekend, most people finish in one sitting.'
+      : 'What we\'d quote for an admin to run this build.';
+
+    saveCalc();
+  }
+
+  const stepMax = { tenants: 5, laptops: 4, phones: 4, yahoo: 5, aol: 5, gmailLegacy: 5, other: 5 };
+  document.querySelectorAll('[data-step]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.getAttribute('data-step');
+      const dir = parseInt(btn.getAttribute('data-dir'), 10);
+      const min = 0;
+      const max = stepMax[key] || 6;
+      state[key] = Math.min(max, Math.max(min, (state[key] || 0) + dir));
+      markCalcTouched();
+      render();
+      applyFiltering();
+    });
+  });
+  document.querySelectorAll('#seg-hub button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.hub = btn.getAttribute('data-hub');
+      markCalcTouched();
+      render();
+      applyFiltering();
+    });
+  });
+  document.getElementById('tog-yubikey').addEventListener('click', function(){
+    state.yubikey = !state.yubikey;
+    markCalcTouched();
+    render();
+    applyFiltering();
+  });
+  document.getElementById('tog-diy').addEventListener('click', function(){
+    state.diy = !state.diy;
+    markCalcTouched();
+    render();
+    applyFiltering();
+  });
+  document.getElementById('calcShowAll').addEventListener('change', function(){
+    setShowAllSections(this.checked);
+  });
+  document.getElementById('filterBarShowAll').addEventListener('click', function(){
+    setShowAllSections(true);
+  });
+
+  render();
+  applyFiltering();
+
+  // ---- high-level / detailed step toggle (shared across chapters, persisted) ----
+  (function(){
+    let hlMode = lsGet('hlMode', false);
+    function apply(){
+      document.body.classList.toggle('hl-mode', hlMode);
+      document.querySelectorAll('.hl-btn').forEach(b => {
+        b.classList.toggle('on', (b.getAttribute('data-level') === 'hl') === hlMode);
+      });
+    }
+    document.querySelectorAll('.hl-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        hlMode = btn.getAttribute('data-level') === 'hl';
+        lsSet('hlMode', hlMode);
+        apply();
+      });
+    });
+    apply();
+  })();
+
+  // ---- progress tracker: checklist + last-viewed chapter, localStorage only ----
+  (function(){
+    const listEl = document.getElementById('progressChecklist');
+    if (!listEl) return;
+    const stepEls = Array.from(document.querySelectorAll('.steps > li[id^="step-"]'));
+    const done = lsGet('stepsDone', {});
+
+    function titleFor(li){
+      const h = li.querySelector('h4');
+      return h ? h.cloneNode(true) : null;
+    }
+    function cleanTitle(li){
+      const h = li.querySelector('h4');
+      if (!h) return li.id;
+      return h.textContent.replace(/(You|Admin)+\s*$/, '').trim();
+    }
+    function updateCount(){
+      const total = stepEls.length;
+      const n = stepEls.filter(li => done[li.id]).length;
+      document.getElementById('progressCount').textContent = n + ' / ' + total + ' done';
+      document.getElementById('progressBarFill').style.width = total ? (100 * n / total) + '%' : '0%';
+    }
+    stepEls.forEach(li => {
+      const item = document.createElement('li');
+      const label = document.createElement('label');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = !!done[li.id];
+      cb.addEventListener('change', () => {
+        done[li.id] = cb.checked;
+        lsSet('stepsDone', done);
+        updateCount();
+      });
+      const span = document.createElement('span');
+      span.className = 'step-title';
+      span.textContent = cleanTitle(li);
+      const jump = document.createElement('a');
+      jump.href = '#' + li.id;
+      jump.className = 'jump';
+      jump.textContent = 'Jump →';
+      label.appendChild(cb);
+      label.appendChild(span);
+      item.appendChild(label);
+      item.appendChild(jump);
+      listEl.appendChild(item);
+    });
+    updateCount();
+
+    document.getElementById('clearProgress').addEventListener('click', () => {
+      lsRemove('stepsDone');
+      lsRemove('lastChapter');
+      lsRemove('calc');
+      lsRemove('hlMode');
+      lsRemove('calcTouched');
+      lsRemove('showAllSections');
+      Object.assign(state, defaultState);
+      calcTouched = false;
+      showAllSections = false;
+      render();
+      applyFiltering();
+      document.querySelectorAll('.checklist input[type="checkbox"]').forEach(cb => cb.checked = false);
+      Object.keys(done).forEach(k => delete done[k]);
+      updateCount();
+      document.getElementById('resumeLine').hidden = true;
+    });
+
+    // last-viewed chapter
+    const lastId = lsGet('lastChapter', null);
+    if (lastId) {
+      const target = document.getElementById(lastId);
+      if (target) {
+        const h = target.querySelector('h2.h, h4');
+        const label = h ? h.textContent.trim() : lastId;
+        const resumeLink = document.getElementById('resumeLink');
+        resumeLink.textContent = label;
+        resumeLink.href = '#' + lastId;
+        document.getElementById('resumeLine').hidden = false;
+      }
+    }
+  })();
+
+  // ---- track current chapter for "last viewed", all viewport widths ----
+  (function(){
+    const chapters = Array.from(document.querySelectorAll('section.chapter[id]'));
+    if (!chapters.length || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) lsSet('lastChapter', entry.target.id);
+      });
+    }, { rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+    chapters.forEach(ch => io.observe(ch));
+  })();
+
+  // ---- contact email reveal (runtime-assembled, not present as plain text/href in source) ----
+  document.querySelectorAll('.email-reveal').forEach(wrap => {
+    const btn = wrap.querySelector('button');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const user = wrap.getAttribute('data-user');
+      const domain = wrap.getAttribute('data-domain');
+      const address = user + '@' + domain;
+      const a = document.createElement('a');
+      a.href = 'mailto:' + address;
+      a.textContent = address;
+      wrap.replaceChildren(a);
+    });
+  });
+
+  // ---- mobile chapter nav: drawer + prev/next ----
+  (function(){
+    const chapters = Array.from(document.querySelectorAll('section.chapter[id]'));
+    const drawer = document.getElementById('drawer');
+    const scrim = document.getElementById('drawerScrim');
+    const drawerList = document.getElementById('drawerList');
+    const navPrev = document.getElementById('navPrev');
+    const navNext = document.getElementById('navNext');
+    const navChapters = document.getElementById('navChapters');
+    const navCurrent = document.getElementById('navCurrent');
+    if (!chapters.length || !drawer) return;
+
+    // clone the TOC links into the drawer
+    document.querySelectorAll('.toc .toc-list > li').forEach(li => {
+      drawerList.appendChild(li.cloneNode(true));
+    });
+
+    function openDrawer(){ drawer.classList.add('open'); scrim.classList.add('open'); }
+    function closeDrawer(){ drawer.classList.remove('open'); scrim.classList.remove('open'); }
+    navChapters.addEventListener('click', openDrawer);
+    scrim.addEventListener('click', closeDrawer);
+    drawerList.addEventListener('click', (e) => {
+      if (e.target.closest('a')) closeDrawer();
+    });
+
+    let currentIndex = 0;
+    function titleFor(section){
+      const h = section.querySelector('h2, h4');
+      return h ? h.textContent.trim() : section.id;
+    }
+    function visibleChapters(){
+      return chapters.filter(ch => !ch.hidden);
+    }
+    function updateButtons(){
+      const visible = visibleChapters();
+      let vIdx = visible.indexOf(chapters[currentIndex]);
+      if (vIdx === -1) vIdx = 0;
+      navPrev.disabled = vIdx <= 0;
+      navNext.disabled = vIdx >= visible.length - 1;
+      navCurrent.textContent = titleFor(chapters[currentIndex]);
+    }
+    function goTo(direction){
+      const visible = visibleChapters();
+      let vIdx = visible.indexOf(chapters[currentIndex]);
+      if (vIdx === -1) vIdx = 0;
+      const target = visible[vIdx + direction];
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    navPrev.addEventListener('click', () => goTo(-1));
+    navNext.addEventListener('click', () => goTo(1));
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const idx = chapters.indexOf(entry.target);
+            if (idx !== -1) { currentIndex = idx; updateButtons(); }
+          }
+        });
+      }, { rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+      chapters.forEach(ch => io.observe(ch));
+    }
+    updateButtons();
+
+    // expose so the filtering system (defined earlier) can refresh prev/next state
+    // whenever the calculator changes which chapters are visible.
+    updateMobileNavButtons = updateButtons;
+    updateMobileNavButtons();
+  })();
+</script>
+</body>
+</html>
